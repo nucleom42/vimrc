@@ -12,8 +12,15 @@ set clipboard^=unnamed
 set mouse=a
 set backspace=indent,eol,start
 set laststatus=2
+set tags=tags
+" promtp if file wasn't saved before exit
+set confirm
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
+autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=4
+autocmd FileType html setlocal expandtab shiftwidth=4 tabstop=4
+autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4
+
 
 colorscheme onedark
 
@@ -28,8 +35,9 @@ autocmd BufWritePre * %s/\s\+$//e
 call pathogen#infect()
 let NERDTreeShowHidden=1
 set rtp+=~/.vim/bundle/Vundle.vim
+let g:deoplete#enable_at_startup = 1
 " set ctrlP plugin
-" set runtimepath^=~/.vim/bundle/ctrlp.vim
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 " allow vim to jump through directories for ctags
 set tags=tags;/
 let g:snipMate = { 'snippet_version' : 1 }
@@ -59,8 +67,13 @@ let g:fzf_tags_command = 'ctags -R'
 " [Commands] --expect expression for directly executing the command
 let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 
+let g:LanguageClient_serverCommands = {
+			\ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+			\ }
+
+
 call vundle#begin()
-" let Vundle manage Vundle, required
+" Plugin 'preservim/nerdtree'
 Plugin 'VundleVim/Vundle.vim'
 " show git diif in vim
 Plugin 'airblade/vim-gitgutter'
@@ -82,6 +95,11 @@ Plugin 'airblade/vim-rooter'
 Plugin 'tmux-plugins/vim-tmux'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+
+Plugin 'dense-analysis/ale'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jremmen/vim-ripgrep'
+
 " remap envoke key
 nnoremap <silent> <C-z> :FZF<CR>
 nnoremap <silent> <C-t> :Windows<CR>
@@ -89,63 +107,96 @@ nnoremap <silent> <C-c> :Buffers<CR>
 nnoremap <silent> <C-x> :Rg<CR>
 " remap close window
 nnoremap <silent> <C-q> :q<CR>
+imap <C-q> <Esc>:q<CR>
 nnoremap <silent> <C-s> :w<CR>
-nnoremap <silent> <C-w> :wq<CR>
-" Ripgrep
-Plugin 'jremmen/vim-ripgrep'
+imap <C-s> <Esc>:w<CR>i
+nnoremap <silent> <C-w> :wqa<CR>
+imap <C-w> <Esc>:wqa<CR>
+
+
+" Ripgrepp
 let g:rg_highligh = 1
-Plugin 'valloric/youcompleteme'
 "" Quick comment toggling
-" Plugin 'tpope/vim-commentary'
-" noremap \ :Commentary<CR
+Plugin 'tpope/vim-commentary'
+noremap \ :Commentary<CR>
 autocmd FileType ruby setlocal commentstring=#\ %s
 
 " Files stucture tree
-Plugin 'scrooloose/nerdtree'
-" map <C-m> :NERDTreeToggle<CR>
+map <C-m> :NERDTreeToggle<CR>
 map - :NERDTreeToggle<CR>
-" map <leader>r :NERDTreeFind<cr>
+map <leader>r :NERDTreeFind<cr>
 " autocmd BufWinEnter * NERDTreeFind
 map ] :NERDTreeFind<CR>
 
 " Ctrl-P configurations
-" let g:ctrlp_map = '<c-p>'
-" let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
 " Ctags with Ctrl-P
-" nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <leader>. :CtrlPTag<cr>
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+			\ { 'fg':      ['fg', 'Normal'],
+			\ 'bg':      ['bg', 'Normal'],
+			\ 'hl':      ['fg', 'Comment'],
+			\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+			\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+			\ 'hl+':     ['fg', 'Statement'],
+			\ 'info':    ['fg', 'PreProc'],
+			\ 'border':  ['fg', 'Ignore'],
+			\ 'prompt':  ['fg', 'Conditional'],
+			\ 'pointer': ['fg', 'Exception'],
+			\ 'marker':  ['fg', 'Keyword'],
+			\ 'spinner': ['fg', 'Label'],
+			\ 'header':  ['fg', 'Comment'] }
+
+call vundle#end()
+
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+
+call plug#begin()
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'dense-analysis/ale'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'mattn/emmet-vim'
+call plug#end()
 
 " ALE
-nnoremap <silent> <C-a> :ALEFix<CR>
-Plugin 'dense-analysis/ale'
-" call vundle#end()
+nnoremap <silent> <C-f> :ALEFix<CR>
+imap <C-f> <Esc> :ALEFix<CR>i
+" let Vundle manage Vundle, required
 let g:ale_lint_on_text_changed = 1
 let g:ale_lint_on_save = 1
 let g:ale_set_loclist = 1
 
 let g:ale_fixers = {
-\  'ruby': [
-\    'remove_trailing_lines',
-\    'trim_whitespace',
-\    'rubocop'
-\  ]
-\}
-let g:ale_linters = {'ruby': ['rubocop', 'ruby']}
+			\  'ruby': [
+			\    'remove_trailing_lines',
+			\    'trim_whitespace',
+			\    'rubocop'
+			\  ],
+			\  'javascript': [
+			\    'remove_trailing_lines',
+			\    'trim_whitespace',
+			\    'eslint'
+			\  ],
+			\  'html': [
+			\    'remove_trailing_lines',
+			\    'trim_whitespace',
+			\    'prettier'
+			\  ],
+			\  'css': [
+			\    'remove_trailing_lines',
+			\    'trim_whitespace',
+			\    'stylelint'
+			\  ],
+			\
+			\}
+let g:ale_linters = {'ruby': ['rubocop', 'ruby'], 'javascript': ['javascript', 'eslint'], 'html': ['prettier', 'html'], 'css': ['stylelint', 'css']}
 let g:ale_ruby_rubocop_executable = 'bin/rubocop'
 let g:ruby_indent_assignment_style = 'variable'
 
@@ -154,7 +205,45 @@ let g:ruby_indent_access_modifier_style = 'normal'
 let g:ruby_indent_assignment_style = 'variable'
 let g:ruby_indent_block_style = 'do'
 
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-set shell=/bin/zsh
+" double space for search by file name
+let mapleader = "\<Space>"
+nnoremap <silent> <Leader><Leader> :FZF<CR>
+
+let g:rubocop_command = 'rubocop'
+
+" Remap Tab key to select first autocompletion suggestion
+inoremap <expr> <Tab> pumvisible() ? "\<C-y>" : "\<Tab>"
+inoremap <expr> <Enter> pumvisible() ? "\<C-y>" : "\<Enter>"
+" Define a custom command to open a new tab and prompt for a file name
+command! -nargs=1 NewTab call NewTabWithPromptFileName(<f-args>)
+" Function to open a new tab and prompt for a file name
+function! NewTabWithPromptFileName(filename)
+  let filename = input('Enter file name: ')
+  if filename != ''
+    execute 'tabnew ' . filename
+  endif
+endfunction
+
+nnoremap <Leader>t :NewTab __nt<CR>
+
+" Define a custom command to open a new tab and prompt for a text to search
+command! -nargs=1 LookUp call NewTabWithPromptSearch(<f-args>)
+
+" Function to open a prompt for a search text
+function! NewTabWithPromptSearch(text)
+  let text = input('Search: ')
+  if text != ''
+    execute 'Rg ' . text
+  endif
+endfunction
+
+nnoremap <Leader>s :LookUp __lu<CR>
+
+nnoremap <Tab> :tabnext<CR>
+
+" Enable autocompletion
+set omnifunc=syntaxcomplete#Complete
+
+" Enable line autocompletion
+set wildmenu
+set wildmode=longest,list,full
