@@ -241,8 +241,31 @@ nnoremap <Leader>s :LookUp __lu<CR>
 
 nnoremap <Tab> :tabnext<CR>
 
-" Enable autocompletion
-set omnifunc=syntaxcomplete#Complete
+" Enable coc.nvim
+let g:coc_global_extensions = ['coc-tsserver']
+
+" Customize HTML tag highlighting
+highlight HTMLTagDelimiter ctermfg=Blue guifg=Blue
+highlight HTMLTagName ctermfg=Green guifg=Green
+
+
+" Define a custom command to open a new tab and prompt for a text replace
+command! -nargs=* Replace :call ReplaceAll(<q-args>)
+
+" Function to open a prompt for replacing text
+function! ReplaceAll(args)
+	if a:args != ''
+		let target = input('Replace: ')
+		let to = input('To: ')
+		if target != ''
+			execute '%s/'. target . '/' . to . '/g'
+		endif
+	endif
+endfunction
+
+nnoremap <silent> <C-r> :Replace __ __<CR>
+imap <C-r> <Esc>:Replace __ __<CR>
+
 
 " Enable line autocompletion
 set wildmenu
