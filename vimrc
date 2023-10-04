@@ -17,9 +17,6 @@ set tags=tags
 set confirm
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
-autocmd FileType javascript setlocal expandtab shiftwidth=4 tabstop=4
-autocmd FileType html setlocal expandtab shiftwidth=4 tabstop=4
-autocmd FileType css setlocal expandtab shiftwidth=4 tabstop=4
 
 
 colorscheme onedark
@@ -29,6 +26,32 @@ au BufRead,BufNewFile *.rb setlocal textwidth=120
 
 " get rid of trailing whitespace on :w
 autocmd BufWritePre * %s/\s\+$//e
+
+" client side
+
+" Enable automatic indentation for HTML and XML files
+autocmd FileType html,xml setlocal shiftwidth=2 tabstop=2
+
+" Enable automatic indentation for JavaScript and JSX files
+autocmd FileType javascript,*.jsx,*.tsx,typescriptreact,javascriptreact setlocal expandtab shiftwidth=2 tabstop=2
+
+" Enable automatic indentation for CSS and SCSS files
+autocmd FileType css,scss setlocal shiftwidth=2 tabstop=2
+
+" Enable automatic indentation for JSON files
+autocmd FileType json setlocal shiftwidth=2 tabstop=2
+
+" Enable automatic indentation for YAML files
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
+
+" Use Prettier for automatic code formatting (you need to have Prettier installed)
+autocmd FileType javascript,jsx,tsx,html,css,scss autocmd BufWritePre <buffer> :silent! %!prettier --stdin-filepath=% --write
+
+" Set vim-jsx-pretty as the syntax highlighter for JSX/React
+autocmd FileType javascript,typescript setlocal syntax=jsxpretty
+
+au BufRead,BufNewFile *.jsx set filetype=javascriptreact
+au BufRead,BufNewFile *.tsx set filetype=typescriptreact
 
 "Pathogen
 " set nocp
@@ -163,6 +186,12 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'mattn/emmet-vim'
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+Plug 'MaxMEllon/vim-jsx-pretty'
+" Plug 'mxw/vim-jsx'
+Plug 'tpope/vim-commentary'
+noremap \ :Commentary<CR>
+autocmd FileType ruby setlocal commentstring=#\ %s
 call plug#end()
 
 " ALE
@@ -184,15 +213,18 @@ let g:ale_fixers = {
 			\    'trim_whitespace',
 			\    'eslint'
 			\  ],
+			\  'javascript.jsx': ['eslint'],
+			\  'typescript.tsx': ['eslint'],
+			\  'typescript': ['eslint'],
 			\  'html': [
 			\    'remove_trailing_lines',
-			\    'trim_whitespace',
-			\    'prettier'
+			\    'prettier',
+			\    'trim_whitespace'
 			\  ],
 			\  'css': [
-			\    'remove_trailing_lines',
 			\    'trim_whitespace',
-			\    'stylelint'
+			\    'stylelint',
+			\    'remove_trailing_lines'
 			\  ],
 			\
 			\}
@@ -215,29 +247,32 @@ let g:rubocop_command = 'rubocop'
 inoremap <expr> <Tab> pumvisible() ? "\<C-y>" : "\<Tab>"
 inoremap <expr> <Enter> pumvisible() ? "\<C-y>" : "\<Enter>"
 " Define a custom command to open a new tab and prompt for a file name
-command! -nargs=1 NewTab call NewTabWithPromptFileName(<f-args>)
+command! -nargs=1 NewFile call NewFile(<f-args>)
 " Function to open a new tab and prompt for a file name
-function! NewTabWithPromptFileName(filename)
-  let filename = input('Enter file name: ')
-  if filename != ''
-    execute 'tabnew ' . filename
-  endif
+function! NewFile(filename)
+	let name = a:filename
+	echo name
+	if name != ''
+		execute 'tabnew ' . name
+		execute ':wq'
+		execute ':NERDTreeRefresh'
+	endif
 endfunction
 
-nnoremap <Leader>t :NewTab __nt<CR>
+nmap <F2>n :call feedkeys(":NewFile " . expand('%@'))<CR>
 
 " Define a custom command to open a new tab and prompt for a text to search
-command! -nargs=1 LookUp call NewTabWithPromptSearch(<f-args>)
+command! -nargs=1 LookUp call LookUp(<f-args>)
 
 " Function to open a prompt for a search text
-function! NewTabWithPromptSearch(text)
-  let text = input('Search: ')
-  if text != ''
-    execute 'Rg ' . text
-  endif
+function! LookUp(text)
+	let text = input('Search: ')
+	if text != ''
+		execute 'Rg ' . text
+	endif
 endfunction
 
-nnoremap <Leader>s :LookUp __lu<CR>
+nnoremap <F1>s :LookUp __lu<CR>
 
 nnoremap <Tab> :tabnext<CR>
 
@@ -256,17 +291,113 @@ command! -nargs=* Replace :call ReplaceAll(<q-args>)
 function! ReplaceAll(args)
 	if a:args != ''
 		let target = input('Replace: ')
-		let to = input('To: ')
 		if target != ''
+			let to = input('To: ')
 			execute '%s/'. target . '/' . to . '/g'
 		endif
 	endif
 endfunction
 
-nnoremap <silent> <C-r> :Replace __ __<CR>
-imap <C-r> <Esc>:Replace __ __<CR>
+nnoremap <silent><F1>r :Replace __ __<CR>
+imap <F1>r <Esc>:Replace __ __<CR>
 
 
-" Enable line autocompletion
-set wildmenu
-set wildmode=longest,list,full
+command! -nargs=1 -complete=file -bang Rename {
+		g:Rename(<q-args>, '<bang>')
+	}
+
+def g:Rename(name: string, bang: string): bool
+	var oldfile = expand('%:p')
+	var status: bool
+
+	if bufexists(fnamemodify(name, ':p'))
+		if (bang ==# '!')
+			silent exe ':' .. bufnr(fnamemodify(name, ':p')) .. 'bwipe!'
+		else
+			echohl ErrorMsg
+			echomsg 'A buffer with that name already exists (use ! to override).'
+			echohl None
+			return false
+		endif
+	endif
+
+	status = true
+
+	v:errmsg = ''
+	silent! exe 'silent! saveas' .. bang .. ' ' .. name
+
+	if v:errmsg =~# '^$\|^E329'
+		var lastbufnr = bufnr('$')
+
+		if expand('%:p') !=# oldfile && filewritable(expand('%:p'))
+			if fnamemodify(bufname(lastbufnr), ':p') ==# oldfile
+				silent exe ':' .. lastbufnr .. 'bwipe!'
+			else
+				echohl ErrorMsg
+				echomsg 'Could not wipe out the old buffer for some reason.'
+				echohl None
+				status = false
+			endif
+
+			if delete(oldfile) != 0
+				echohl ErrorMsg
+				echomsg 'Could not delete the old file: ' .. oldfile
+				echohl None
+				status = false
+			endif
+		else
+			echohl ErrorMsg
+			echomsg 'Rename failed for some reason.'
+			echohl None
+			status = false
+		endif
+	else
+		echoerr v:errmsg
+		status = false
+	endif
+	execute ':NERDTreeRefresh'
+	return status
+enddef
+
+nmap <F2>r :call feedkeys(":Rename " . expand('%@'))<CR>
+
+nmap <F2>d :call feedkeys(":RemoveFile " . expand('%@'))<CR>
+command! -nargs=* RemoveFile :call RemoveFile(<q-args>)
+
+function! RemoveFile(file_to_remove)
+    if filewritable(a:file_to_remove)
+	let file = a:file_to_remove
+        let choice = input('Are you sure you want to remove ' . file . '? (y/n): ')
+        if choice =~# '^y'
+            call delete(file)
+	    execute ':NERDTreeRefresh'
+            echo ' File removed: ' . file
+        else
+            echo ' File not removed.'
+        endif
+    else
+        echo ' File does not exist or is not writable.'
+    endif
+endfunction
+
+
+function! CreateDir(path)
+  " Check if the directory exists
+  if !isdirectory(a:path)
+    " Create the directory and its parent directories recursively
+    call mkdir(a:path, "p")
+    execute ':NERDTreeRefresh'
+    echo "Directory created: " . a:path
+  else
+    echo "Directory already exists: " . a:path
+  endif
+endfunction
+
+nmap <F2>cd :call feedkeys(":CreateDir " . expand('%@'))<CR>
+command! -nargs=* CreateDir :call CreateDir(<q-args>)
+
+inoremap <C-A> <C-O>0
+inoremap <C-E> <C-O>$
+
+" Map Ctrl-F to automatically fix indentation in Ruby
+autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
