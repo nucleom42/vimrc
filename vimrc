@@ -263,7 +263,7 @@ function! NewFile(filename)
 endfunction
 
 nmap <F2>n :call feedkeys(":NewFile " . expand('%@'))<CR>
-
+nnoremap <silent> cr :let @+=expand('%:p:h')<CR>:echo 'Relative path copied to clipboard'<CR>
 " Define a custom command to open a new tab and prompt for a text to search
 command! -nargs=1 LookUp call LookUp(<f-args>)
 
