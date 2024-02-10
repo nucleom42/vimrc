@@ -144,8 +144,6 @@ Plugin 'tpope/vim-commentary'
 noremap \ :Commentary<CR>
 autocmd FileType ruby setlocal commentstring=#\ %s
 
-" Files stucture tree
-map <C-m> :NERDTreeToggle<CR>
 map - :NERDTreeToggle<CR>
 map <leader>r :NERDTreeFind<cr>
 " autocmd BufWinEnter * NERDTreeFind
@@ -270,7 +268,7 @@ command! -nargs=1 LookUp call LookUp(<f-args>)
 function! LookUp(text)
 	let text = input('Search: ')
 	if text != ''
-		execute 'Rg ' . text
+		 execute 'Rg ' . text . ' --glob=!*tags*'
 	endif
 endfunction
 
@@ -306,5 +304,7 @@ imap <Tab>r <Esc>:Replace __ __<CR>
 inoremap <C-A> <C-O>0
 inoremap <C-E> <C-O>$
 
-" Map Ctrl-Lto automatically fix indentation in Ruby
+" Map Ctrl-L to automatically fix indentation in Ruby
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
+
+autocmd BufWritePost * silent! !ctags --tag-relative -R --sort=yes --languages=ruby,javascript --exclude=.git --exclude=log . $(bundle list --paths) 2>ctags_warnings.log
