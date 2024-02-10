@@ -201,7 +201,7 @@ nnoremap <silent> <C-f> :ALEFix<CR>
 imap <C-f> <Esc> :ALEFix<CR>i
 " let Vundle manage Vundle, required
 let g:ale_lint_on_text_changed = 1
-let g:ale_lint_on_save = 1
+" let g:ale_lint_on_save = 1
 let g:ale_set_loclist = 1
 let g:gutentags_enabled = 1
 
@@ -242,7 +242,7 @@ let g:ruby_indent_block_style = 'do'
 
 " double space for search by file name
 let mapleader = "\<Space>"
-nnoremap <silent> <Leader><Leader> :FZF<CR>
+nnoremap <silent> <Space><Space> :FZF<CR>
 
 let g:rubocop_command = 'rubocop'
 
@@ -262,7 +262,6 @@ function! NewFile(filename)
 	endif
 endfunction
 
-nmap <F2>n :call feedkeys(":NewFile " . expand('%@'))<CR>
 nnoremap <silent> cr :let @+=expand('%:p:h')<CR>:echo 'Relative path copied to clipboard'<CR>
 " Define a custom command to open a new tab and prompt for a text to search
 command! -nargs=1 LookUp call LookUp(<f-args>)
@@ -275,7 +274,7 @@ function! LookUp(text)
 	endif
 endfunction
 
-nnoremap <F1>s :LookUp __lu<CR>
+noremap <Tab>s :LookUp __lu<CR>
 
 nnoremap <Tab> :tabnext<CR>
 
@@ -301,106 +300,11 @@ function! ReplaceAll(args)
 	endif
 endfunction
 
-nnoremap <silent><F1>r :Replace __ __<CR>
-imap <F1>r <Esc>:Replace __ __<CR>
-
-
-command! -nargs=1 -complete=file -bang Rename {
-		g:Rename(<q-args>, '<bang>')
-	}
-
-def g:Rename(name: string, bang: string): bool
-	var oldfile = expand('%:p')
-	var status: bool
-
-	if bufexists(fnamemodify(name, ':p'))
-		if (bang ==# '!')
-			silent exe ':' .. bufnr(fnamemodify(name, ':p')) .. 'bwipe!'
-		else
-			echohl ErrorMsg
-			echomsg 'A buffer with that name already exists (use ! to override).'
-			echohl None
-			return false
-		endif
-	endif
-
-	status = true
-
-	v:errmsg = ''
-	silent! exe 'silent! saveas' .. bang .. ' ' .. name
-
-	if v:errmsg =~# '^$\|^E329'
-		var lastbufnr = bufnr('$')
-
-		if expand('%:p') !=# oldfile && filewritable(expand('%:p'))
-			if fnamemodify(bufname(lastbufnr), ':p') ==# oldfile
-				silent exe ':' .. lastbufnr .. 'bwipe!'
-			else
-				echohl ErrorMsg
-				echomsg 'Could not wipe out the old buffer for some reason.'
-				echohl None
-				status = false
-			endif
-
-			if delete(oldfile) != 0
-				echohl ErrorMsg
-				echomsg 'Could not delete the old file: ' .. oldfile
-				echohl None
-				status = false
-			endif
-		else
-			echohl ErrorMsg
-			echomsg 'Rename failed for some reason.'
-			echohl None
-			status = false
-		endif
-	else
-		echoerr v:errmsg
-		status = false
-	endif
-	execute ':NERDTreeRefresh'
-	return status
-enddef
-
-nmap <F2>r :call feedkeys(":Rename " . expand('%@'))<CR>
-
-nmap <F2>d :call feedkeys(":RemoveFile " . expand('%@'))<CR>
-command! -nargs=* RemoveFile :call RemoveFile(<q-args>)
-
-function! RemoveFile(file_to_remove)
-    if filewritable(a:file_to_remove)
-	let file = a:file_to_remove
-        let choice = input('Are you sure you want to remove ' . file . '? (y/n): ')
-        if choice =~# '^y'
-            call delete(file)
-	    execute ':NERDTreeRefresh'
-            echo ' File removed: ' . file
-        else
-            echo ' File not removed.'
-        endif
-    else
-        echo ' File does not exist or is not writable.'
-    endif
-endfunction
-
-
-function! CreateDir(path)
-  " Check if the directory exists
-  if !isdirectory(a:path)
-    " Create the directory and its parent directories recursively
-    call mkdir(a:path, "p")
-    execute ':NERDTreeRefresh'
-    echo "Directory created: " . a:path
-  else
-    echo "Directory already exists: " . a:path
-  endif
-endfunction
-
-nmap <F2>cd :call feedkeys(":CreateDir " . expand('%@'))<CR>
-command! -nargs=* CreateDir :call CreateDir(<q-args>)
+nnoremap <silent><Tab>r :Replace __ __<CR>
+imap <Tab>r <Esc>:Replace __ __<CR>
 
 inoremap <C-A> <C-O>0
 inoremap <C-E> <C-O>$
 
-" Map Ctrl-F to automatically fix indentation in Ruby
+" Map Ctrl-Lto automatically fix indentation in Ruby
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
