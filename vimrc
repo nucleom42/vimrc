@@ -19,8 +19,6 @@ autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
 
 
-colorscheme onedark
-
 " max text length
 au BufRead,BufNewFile *.rb setlocal textwidth=120
 
@@ -48,11 +46,11 @@ autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 autocmd FileType javascript,jsx,tsx,html,css,scss autocmd BufWritePre <buffer> :silent! %!prettier --stdin-filepath=% --write
 
 " Set vim-jsx-pretty as the syntax highlighter for JSX/React
-autocmd FileType javascript,typescript setlocal syntax=jsxpretty
 
 au BufRead,BufNewFile *.jsx set filetype=javascriptreact
 au BufRead,BufNewFile *.tsx set filetype=typescriptreact
 
+colorscheme onedark
 "Pathogen
 " set nocp
 call pathogen#infect()
@@ -179,13 +177,13 @@ autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'pangloss/vim-javascript'
 Plug 'dense-analysis/ale'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'mattn/emmet-vim'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
-Plug 'MaxMEllon/vim-jsx-pretty'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-projectionist'
 " Plug 'mxw/vim-jsx'
@@ -307,4 +305,3 @@ inoremap <C-E> <C-O>$
 " Map Ctrl-L to automatically fix indentation in Ruby
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
 
-autocmd BufWritePost * silent! !ctags --tag-relative -R --sort=yes --languages=ruby,javascript --exclude=.git --exclude=log . $(bundle list --paths) 2>ctags_warnings.log
