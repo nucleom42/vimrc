@@ -22,8 +22,18 @@ autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
 " max text length
 au BufRead,BufNewFile *.rb setlocal textwidth=120
 
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+
 " get rid of trailing whitespace on :w
 autocmd BufWritePre * %s/\s\+$//e
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 " client side
 
@@ -92,6 +102,7 @@ let g:LanguageClient_serverCommands = {
 			\ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
 			\ }
 
+let python_highlight_all=1
 
 call vundle#begin()
 " Plugin 'preservim/nerdtree'
@@ -120,6 +131,8 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'dense-analysis/ale'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jremmen/vim-ripgrep'
+
+Plugin 'vim-scripts/indentpython.vim'
 
 " remap envoke key
 nnoremap <silent> <C-z> :FZF<CR>
@@ -186,6 +199,8 @@ Plug 'mattn/emmet-vim'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-projectionist'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'nvie/vim-flake8'
 " Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-commentary'
 noremap \ :Commentary<CR>
@@ -272,7 +287,7 @@ endfunction
 
 noremap <Tab>s :LookUp __lu<CR>
 
-nnoremap <Tab> :tabnext<CR>
+" nnoremap <Tab> :tabnext<CR>
 
 " Enable coc.nvim
 let g:coc_global_extensions = ['coc-tsserver']
@@ -285,7 +300,7 @@ highlight HTMLTagName ctermfg=Green guifg=Green
 " Define a custom command to open a new tab and prompt for a text replace
 command! -nargs=* Replace :call ReplaceAll(<q-args>)
 
-" Function to open a prompt for replacing text
+" Function to open a prompt for /replacing text
 function! ReplaceAll(args)
 	if a:args != ''
 		let target = input('Replace: ')
@@ -304,4 +319,5 @@ inoremap <C-E> <C-O>$
 
 " Map Ctrl-L to automatically fix indentation in Ruby
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
+hi Search cterm=NONE ctermfg=grey ctermbg=blue
 
