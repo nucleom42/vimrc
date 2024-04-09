@@ -22,18 +22,11 @@ autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
 " max text length
 au BufRead,BufNewFile *.rb setlocal textwidth=120
 
-au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
+au BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
 
 " get rid of trailing whitespace on :w
 autocmd BufWritePre * %s/\s\+$//e
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+" au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 " client side
 
@@ -109,11 +102,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 " show git diif in vim
 Plugin 'airblade/vim-gitgutter'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Install L9 and avoid a Naming conflict if you've already
-" installed a
-" different version somewhere else.
-Plugin 'ascenator/L9', {'name': 'newL9'}
+
 Bundle 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-endwise'
@@ -281,8 +270,10 @@ command! -nargs=1 LookUp call LookUp(<f-args>)
 function! LookUp(text)
 	let text = input('Search: ')
 	if text != ''
-		 execute 'Rg ' . text . ' --glob=!*tags*'
+		let escaped_text = escape(text, '.\*[]^$(){}+?|')
+		execute 'Rg "' . escaped_text . '" --glob=!*tags*'
 	endif
+
 endfunction
 
 noremap <Tab>s :LookUp __lu<CR>
@@ -317,7 +308,4 @@ imap <Tab>r <Esc>:Replace __ __<CR>
 inoremap <C-A> <C-O>0
 inoremap <C-E> <C-O>$
 
-" Map Ctrl-L to automatically fix indentation in Ruby
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
-hi Search cterm=NONE ctermfg=grey ctermbg=blue
-
