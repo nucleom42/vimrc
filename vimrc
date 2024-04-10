@@ -133,8 +133,6 @@ nnoremap <silent> <C-q> :q<CR>
 imap <C-q> <Esc>:q<CR>
 nnoremap <silent> <C-s> :w<CR>
 imap <C-s> <Esc>:w<CR>i
-nnoremap <silent> <C-w> :wqa<CR>
-imap <C-w> <Esc>:wqa<CR>
 
 
 " Ripgrepp
