@@ -18,7 +18,7 @@ set confirm
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
 
-set shell=zsh
+" set shell=zsh
 
 " max text length
 au BufRead,BufNewFile *.rb setlocal textwidth=120
@@ -199,8 +199,8 @@ call plug#end()
 nnoremap <silent> <C-f> :ALEFix<CR>
 imap <C-f> <Esc> :ALEFix<CR>i
 
-nnoremap <silent> <Tab>q :below terminal<CR>
-imap <C-f> <Tab>q :below terminal<CR>i
+nnoremap <silent> <Tab>q :below term zsh<CR>
+imap <C-f> <Tab>q :below term zsh<CR>i
 " let Vundle manage Vundle, required
 let g:ale_lint_on_text_changed = 1
 " let g:ale_lint_on_save = 1
