@@ -311,3 +311,7 @@ inoremap <C-A> <C-O>0
 inoremap <C-E> <C-O>$
 
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
+nnoremap <silent> <Tab>2 :tabn<CR>
+imap <C-f> <Tab>2 :tabn<CR>i
+nnoremap <silent> <Tab>1 :tabp<CR>
+imap <C-f> <Tab>1 :tabp<CR>i
