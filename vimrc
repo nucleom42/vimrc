@@ -13,6 +13,8 @@ set mouse=a
 set backspace=indent,eol,start
 set laststatus=2
 set tags=tags
+set hlsearch
+nnoremap <CR> :noh<CR>
 " promtp if file wasn't saved before exit
 set confirm
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
@@ -53,6 +55,9 @@ autocmd FileType javascript,jsx,tsx,html,css,scss autocmd BufWritePre <buffer> :
 
 au BufRead,BufNewFile *.jsx set filetype=javascriptreact
 au BufRead,BufNewFile *.tsx set filetype=typescriptreact
+
+
+let g:onedark_color_overrides = {"cursor_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "visual_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "search_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "replace_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "line_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}}
 
 colorscheme onedark
 "Pathogen
@@ -311,3 +316,4 @@ inoremap <C-A> <C-O>0
 inoremap <C-E> <C-O>$
 
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
+
