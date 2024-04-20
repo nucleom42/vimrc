@@ -184,7 +184,6 @@ autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pangloss/vim-javascript'
-Plug 'dense-analysis/ale'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'hail2u/vim-css3-syntax'
@@ -211,7 +210,7 @@ let g:ale_lint_on_text_changed = 1
 " let g:ale_lint_on_save = 1
 let g:ale_set_loclist = 1
 let g:gutentags_enabled = 1
-
+let g:ale_ruby_rubocop_config_file = '.rubocop.yml'
 let g:ale_fixers = {
 			\  'ruby': [
 			\    'remove_trailing_lines',
@@ -238,7 +237,7 @@ let g:ale_fixers = {
 			\  ],
 			\
 			\}
-let g:ale_linters = {'ruby': ['rubocop', 'ruby'], 'javascript': ['javascript', 'eslint'], 'html': ['prettier', 'html'], 'css': ['stylelint', 'css']}
+let g:ale_linters = {'ruby': ['rubocop', 'ruby'], 'python': ['flake8', 'pylint'], 'javascript': ['javascript', 'eslint'], 'html': ['prettier', 'html'], 'css': ['stylelint', 'css']}
 let g:ale_ruby_rubocop_executable = 'bin/rubocop'
 let g:ruby_indent_assignment_style = 'variable'
 
@@ -321,3 +320,22 @@ nnoremap <silent> <Tab>2 :tabn<CR>
 imap <C-f> <Tab>2 :tabn<CR>i
 nnoremap <silent> <Tab>1 :tabp<CR>
 imap <C-f> <Tab>1 :tabp<CR>i
+
+function! LinterStatus() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+
+  return l:counts.total == 0 ? '✨ all good ✨' : printf(
+        \   '😞 %dW %dE',
+        \   all_non_errors,
+        \   all_errors
+        \)
+endfunction
+
+set statusline=
+set statusline+=%m
+set statusline+=\ %f
+set statusline+=%=
+set statusline+=\ %{LinterStatus()}
