@@ -14,6 +14,7 @@ set backspace=indent,eol,start
 set laststatus=2
 set tags=tags
 set hlsearch
+set encoding=UTF-8
 nnoremap <CR> :noh<CR>
 " promtp if file wasn't saved before exit
 set confirm
@@ -102,7 +103,6 @@ let g:LanguageClient_serverCommands = {
 			\ }
 
 let python_highlight_all=1
-
 call vundle#begin()
 " Plugin 'preservim/nerdtree'
 Plugin 'VundleVim/Vundle.vim'
@@ -128,6 +128,11 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'jremmen/vim-ripgrep'
 
 Plugin 'vim-scripts/indentpython.vim'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
 
 " remap envoke key
 nnoremap <silent> <C-z> :FZF<CR>
@@ -321,21 +326,5 @@ imap <C-f> <Tab>2 :tabn<CR>i
 nnoremap <silent> <Tab>1 :tabp<CR>
 imap <C-f> <Tab>1 :tabp<CR>i
 
-function! LinterStatus() abort
-  let l:counts = ale#statusline#Count(bufnr(''))
 
-  let l:all_errors = l:counts.error + l:counts.style_error
-  let l:all_non_errors = l:counts.total - l:all_errors
 
-  return l:counts.total == 0 ? '✨ all good ✨' : printf(
-        \   '😞 %dW %dE',
-        \   all_non_errors,
-        \   all_errors
-        \)
-endfunction
-
-set statusline=
-set statusline+=%m
-set statusline+=\ %f
-set statusline+=%=
-set statusline+=\ %{LinterStatus()}
