@@ -326,5 +326,7 @@ imap <C-f> <Tab>2 :tabn<CR>i
 nnoremap <silent> <Tab>1 :tabp<CR>
 imap <C-f> <Tab>1 :tabp<CR>i
 
-
-
+let s:salmon = "cc527a"
+let g:NERDTreeExtensionHighlightColor = {}
+let g:NERDTreeExtensionHighlightColor['rb'] = s:salmon
+let g:NERDTreeExtensionHighlightColor['erb'] = s:salmon
