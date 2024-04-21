@@ -129,6 +129,8 @@ Plugin 'jremmen/vim-ripgrep'
 
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'nvie/vim-flake8'
 
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
@@ -196,13 +198,14 @@ Plug 'mattn/emmet-vim'
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-projectionist'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'nvie/vim-flake8'
+Plug 'tpope/vim-fugitive'
+Plug 'itchyny/lightline.vim'
 " Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-commentary'
+
+call plug#end()
 noremap \ :Commentary<CR>
 autocmd FileType ruby setlocal commentstring=#\ %s
-call plug#end()
 
 " ALE
 nnoremap <silent> <C-f> :ALEFix<CR>
@@ -256,6 +259,15 @@ let mapleader = "\<Space>"
 nnoremap <silent> <Space><Space> :FZF<CR>
 
 let g:rubocop_command = 'rubocop'
+let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
 
 " Remap Tab key to select first autocompletion suggestion
 inoremap <expr> <Tab> pumvisible() ? "\<C-y>" : "\<Tab>"
