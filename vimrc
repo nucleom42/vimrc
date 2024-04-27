@@ -57,8 +57,7 @@ autocmd FileType javascript,jsx,tsx,html,css,scss autocmd BufWritePre <buffer> :
 au BufRead,BufNewFile *.jsx set filetype=javascriptreact
 au BufRead,BufNewFile *.tsx set filetype=typescriptreact
 
-
-let g:onedark_color_overrides = {"cursor_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "visual_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "search_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "replace_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "line_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}}
+let g:onedark_color_overrides = {"cursor_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "visual_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}}
 
 colorscheme onedark
 "Pathogen
@@ -310,7 +309,6 @@ let g:coc_global_extensions = ['coc-tsserver']
 highlight HTMLTagDelimiter ctermfg=Blue guifg=Blue
 highlight HTMLTagName ctermfg=Green guifg=Green
 
-
 " Define a custom command to open a new tab and prompt for a text replace
 command! -nargs=* Replace :call ReplaceAll(<q-args>)
 
@@ -339,6 +337,11 @@ nnoremap <silent> <Tab>1 :tabp<CR>
 imap <C-f> <Tab>1 :tabp<CR>i
 
 let s:salmon = "cc527a"
+let s:greeny = "3aafa9"
 let g:NERDTreeExtensionHighlightColor = {}
 let g:NERDTreeExtensionHighlightColor['rb'] = s:salmon
 let g:NERDTreeExtensionHighlightColor['erb'] = s:salmon
+
+
+highlight ColorColumn ctermbg=magenta guibg=lightgrey
+call matchadd('ColorColumn', '\%121v', 100)
