@@ -202,6 +202,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'itchyny/lightline.vim'
 " Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-commentary'
+Plug 'ludovicchabant/vim-gutentags'
+
 call plug#end()
 
 noremap \ :Commentary<CR>
@@ -213,8 +215,7 @@ imap <C-f> <Esc> :ALEFix<CR>i
 
 nnoremap <silent> <Tab>q :below term zsh<CR>
 imap <C-f> <Tab>q :below term zsh<CR>i
-" let Vundle manage Vundle, required
-let g:ale_lint_on_text_changed = 1
+
 " let g:ale_lint_on_save = 1
 let g:ale_set_loclist = 1
 let g:gutentags_enabled = 1
@@ -348,5 +349,7 @@ let g:NERDTreeExtensionHighlightColor['rb'] = s:salmon
 let g:NERDTreeExtensionHighlightColor['erb'] = s:salmon
 
 
-highlight ColorColumn ctermbg=magenta guibg=lightgrey
-call matchadd('ColorColumn', '\%121v', 100)
+highlight ColorColumnText cterm=underline ctermfg=red guifg=red guibg=NONE
+call matchadd('ColorColumnText', '\%121v', 100)
+
+
