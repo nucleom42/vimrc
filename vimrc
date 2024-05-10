@@ -201,8 +201,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'itchyny/lightline.vim'
 " Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-commentary'
-
 call plug#end()
+
 noremap \ :Commentary<CR>
 autocmd FileType ruby setlocal commentstring=#\ %s
 
@@ -335,6 +335,10 @@ nnoremap <silent> <Tab>2 :tabn<CR>
 imap <C-f> <Tab>2 :tabn<CR>i
 nnoremap <silent> <Tab>1 :tabp<CR>
 imap <C-f> <Tab>1 :tabp<CR>i
+nnoremap <silent> <Tab>b :Git blame<CR>
+imap <Tab>b :Git blame <CR>i
+nnoremap <silent> <Tab>d :GitGutterDiffOrig<CR>
+imap <Tab>d :GitGutterDiffOrig <CR>i
 
 let s:salmon = "cc527a"
 let s:greeny = "3aafa9"
