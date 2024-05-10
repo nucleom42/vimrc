@@ -130,7 +130,12 @@ Plugin 'vim-scripts/indentpython.vim'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'nvie/vim-flake8'
+Plugin 'davidhalter/jedi-vim'
 
+Plugin 'tpope/vim-commentary'
+
+
+call vundle#end()
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
 let g:NERDTreePatternMatchHighlightFullName = 1
@@ -150,7 +155,6 @@ imap <C-s> <Esc>:w<CR>i
 " Ripgrepp
 let g:rg_highligh = 1
 "" Quick comment toggling
-Plugin 'tpope/vim-commentary'
 noremap \ :Commentary<CR>
 autocmd FileType ruby setlocal commentstring=#\ %s
 
@@ -180,9 +184,6 @@ let g:fzf_colors =
 			\ 'marker':  ['fg', 'Keyword'],
 			\ 'spinner': ['fg', 'Label'],
 			\ 'header':  ['fg', 'Comment'] }
-
-call vundle#end()
-
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
@@ -242,7 +243,7 @@ let g:ale_fixers = {
 			\    'stylelint',
 			\    'remove_trailing_lines'
 			\  ],
-			\
+			\  'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8'],
 			\}
 let g:ale_linters = {'ruby': ['rubocop', 'ruby'], 'python': ['flake8', 'pylint'], 'javascript': ['javascript', 'eslint'], 'html': ['prettier', 'html'], 'css': ['stylelint', 'css']}
 let g:ale_ruby_rubocop_executable = 'bin/rubocop'
