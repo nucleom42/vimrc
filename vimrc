@@ -133,7 +133,7 @@ Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 
 Plugin 'tpope/vim-commentary'
-
+Plugin 'Exafunction/codeium.vim'
 
 call vundle#end()
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -203,6 +203,7 @@ Plug 'itchyny/lightline.vim'
 " Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-commentary'
 Plug 'ludovicchabant/vim-gutentags'
+
 
 call plug#end()
 
