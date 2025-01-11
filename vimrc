@@ -98,7 +98,7 @@ let g:fzf_tags_command = 'ctags -R'
 let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 
 let g:LanguageClient_serverCommands = {
-			\ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+			\ 'ruby': ['/Users/oleg/.rbenv/shims/solargraph', 'stdio'],
 			\ }
 
 let python_highlight_all=1
@@ -134,6 +134,7 @@ Plugin 'davidhalter/jedi-vim'
 
 Plugin 'tpope/vim-commentary'
 Plugin 'Exafunction/codeium.vim'
+" Plugin 'github/copilot.vim'
 
 call vundle#end()
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -203,7 +204,8 @@ Plug 'itchyny/lightline.vim'
 " Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-commentary'
 Plug 'ludovicchabant/vim-gutentags'
-
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
 
 call plug#end()
 
@@ -292,14 +294,45 @@ nnoremap <silent> cr :let @+=expand('%:p:h')<CR>:echo 'Relative path copied to c
 command! -nargs=1 LookUp call LookUp(<f-args>)
 
 " Function to open a prompt for a search text
-function! LookUp(text)
-	let text = input('Search: ')
-	if text != ''
-		let escaped_text = escape(text, '.\*[]^$(){}+?|')
-		execute 'Rg "' . escaped_text . '" --glob=!*tags*'
-	endif
 
+
+
+
+function! LookUp(text)
+    " Prompt the user for the search text
+    let text = input('Search: ')
+
+    " Exit if the input is empty
+    if text != ''
+        " Escape special regex characters for Ripgrep
+        let escaped_text = escape(text, '.\*[]^$(){}+?|\\')
+
+        " Normalize newlines and whitespace to match any whitespace
+        let normalized_text = substitute(escaped_text, '\n\+', '\\s*', 'g')
+        let normalized_text = substitute(normalized_text, '\s\+', '\\s*', 'g')
+
+        " Wrap the search term in single quotes to prevent shell interpretation issues
+        let search_term = "'" . normalized_text . "'"
+
+        " Construct the ripgrep command
+        let command = 'rg -U --vimgrep --no-heading --column ' . search_term . ' --glob=!*tags*'
+
+        " Execute the ripgrep command and populate the Quickfix list
+        cexpr system(command)
+
+        " Open the Quickfix window if there are results
+        if len(getqflist()) > 0
+            copen
+        else
+            redraw " Clear previous input or text
+            echo "No results found"
+        endif
+    endif
 endfunction
+
+
+
+
 
 noremap <Tab>s :LookUp __lu<CR>
 
@@ -352,5 +385,3 @@ let g:NERDTreeExtensionHighlightColor['erb'] = s:salmon
 
 highlight ColorColumnText cterm=underline ctermfg=red guifg=red guibg=NONE
 call matchadd('ColorColumnText', '\%121v', 100)
-
-
