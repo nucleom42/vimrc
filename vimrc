@@ -1,7 +1,6 @@
 set nocompatible              " be iMproved, required
 set number
 syntax enable
-set shell=bash
 syntax on
 filetype plugin indent on
 filetype on
@@ -20,8 +19,6 @@ nnoremap <CR> :noh<CR>
 set confirm
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
-
-" set shell=zsh
 
 " max text length
 au BufRead,BufNewFile *.rb setlocal textwidth=120
@@ -103,7 +100,7 @@ let g:LanguageClient_serverCommands = {
 
 let python_highlight_all=1
 call vundle#begin()
-" Plugin 'preservim/nerdtree'
+Plugin 'preservim/nerdtree'
 Plugin 'VundleVim/Vundle.vim'
 " show git diif in vim
 Plugin 'airblade/vim-gitgutter'
@@ -123,7 +120,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
 Plugin 'dense-analysis/ale'
-Plugin 'scrooloose/nerdtree'
+" Plugin 'scrooloose/nerdtree'
 Plugin 'jremmen/vim-ripgrep'
 
 Plugin 'vim-scripts/indentpython.vim'
@@ -204,8 +201,7 @@ Plug 'itchyny/lightline.vim'
 " Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-commentary'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
