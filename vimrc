@@ -130,8 +130,8 @@ Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 
 Plugin 'tpope/vim-commentary'
-Plugin 'Exafunction/codeium.vim'
-" Plugin 'github/copilot.vim'
+" Plugin 'Exafunction/codeium.vim'
+Plugin 'github/copilot.vim'
 
 call vundle#end()
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -285,7 +285,7 @@ function! NewFile(filename)
 	endif
 endfunction
 
-nnoremap <silent> cr :let @+=expand('%:p:h')<CR>:echo 'Relative path copied to clipboard'<CR>
+nnoremap <silent> cr :let @+=expand('%')<CR>:echo 'Relative path copied to clipboard'<CR>
 " Define a custom command to open a new tab and prompt for a text to search
 command! -nargs=1 LookUp call LookUp(<f-args>)
 
@@ -311,7 +311,7 @@ function! LookUp(text)
         let search_term = "'" . normalized_text . "'"
 
         " Construct the ripgrep command
-        let command = 'rg -U --vimgrep --no-heading --column ' . search_term . ' --glob=!*tags*'
+        let command = "Rg -U --vimgrep --no-heading --column " . search_term . " --glob='!*tags*'"
 
         " Execute the ripgrep command and populate the Quickfix list
         cexpr system(command)
