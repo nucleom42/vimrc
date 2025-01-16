@@ -94,6 +94,8 @@ let g:fzf_tags_command = 'ctags -R'
 " [Commands] --expect expression for directly executing the command
 let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 
+let g:fzf_action = {'enter': 'tabedit',}
+
 let g:LanguageClient_serverCommands = {
 			\ 'ruby': ['/Users/oleg/.rbenv/shims/solargraph', 'stdio'],
 			\ }
