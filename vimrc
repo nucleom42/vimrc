@@ -15,6 +15,7 @@ set tags=tags
 set hlsearch
 set encoding=UTF-8
 nnoremap <CR> :noh<CR>
+nnoremap <silent> <C-]> :tab tag <C-r><C-w><CR>
 " promtp if file wasn't saved before exit
 set confirm
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
