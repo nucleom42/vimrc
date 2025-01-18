@@ -28,9 +28,6 @@ au BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwid
 
 " get rid of trailing whitespace on :w
 autocmd BufWritePre * %s/\s\+$//e
-" au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
-" client side
 
 " Enable automatic indentation for HTML and XML files
 autocmd FileType html,xml setlocal shiftwidth=2 tabstop=2
@@ -133,8 +130,8 @@ Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 
 Plugin 'tpope/vim-commentary'
-" Plugin 'Exafunction/codeium.vim'
-Plugin 'github/copilot.vim'
+Plugin 'Exafunction/codeium.vim'
+" Plugin 'github/copilot.vim'
 
 call vundle#end()
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -208,15 +205,12 @@ Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
-noremap \ :Commentary<CR>
-autocmd FileType ruby setlocal commentstring=#\ %s
-
 " ALE
 nnoremap <silent> <C-f> :ALEFix<CR>
 imap <C-f> <Esc> :ALEFix<CR>i
 
-nnoremap <silent> <Tab>q :below term zsh<CR>
-imap <C-f> <Tab>q :below term zsh<CR>i
+nnoremap <silent> `q :below term zsh<CR>
+imap <C-f> `q :below term zsh<CR>i
 
 " let g:ale_lint_on_save = 1
 let g:ale_set_loclist = 1
@@ -329,13 +323,7 @@ function! LookUp(text)
     endif
 endfunction
 
-
-
-
-
-noremap <Tab>s :LookUp __lu<CR>
-
-" nnoremap <Tab> :tabnext<CR>
+noremap `s :LookUp __lu<CR>
 
 " Enable coc.nvim
 let g:coc_global_extensions = ['coc-tsserver']
@@ -358,22 +346,22 @@ function! ReplaceAll(args)
 	endif
 endfunction
 
-nnoremap <silent><Tab>r :Replace __ __<CR>
-imap <Tab>r <Esc>:Replace __ __<CR>
+nnoremap <silent>`r :Replace __ __<CR>
+imap `r <Esc>:Replace __ __<CR>
 
 inoremap <C-A> <C-O>0
 inoremap <C-E> <C-O>$
 
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
 
-nnoremap <silent> <Tab>2 :tabn<CR>
-imap <C-f> <Tab>2 :tabn<CR>i
-nnoremap <silent> <Tab>1 :tabp<CR>
-imap <C-f> <Tab>1 :tabp<CR>i
-nnoremap <silent> <Tab>b :Git blame<CR>
-imap <Tab>b :Git blame <CR>i
-nnoremap <silent> <Tab>d :GitGutterDiffOrig<CR>
-imap <Tab>d :GitGutterDiffOrig <CR>i
+nnoremap <silent> `2 :tabn<CR>
+imap <C-f> `2 :tabn<CR>i
+nnoremap <silent> `1 :tabp<CR>
+imap <C-f> `1 :tabp<CR>i
+nnoremap <silent> `b :Git blame<CR>
+imap `b :Git blame <CR>i
+nnoremap <silent> `d :GitGutterDiffOrig<CR>
+imap `d :GitGutterDiffOrig <CR>i
 
 let s:salmon = "cc527a"
 let s:greeny = "3aafa9"
