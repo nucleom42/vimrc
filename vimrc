@@ -55,6 +55,7 @@ au BufRead,BufNewFile *.tsx set filetype=typescriptreact
 let g:onedark_color_overrides = {"cursor_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "visual_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}}
 
 colorscheme onedark
+
 "Pathogen
 " set nocp
 call pathogen#infect()
@@ -130,8 +131,9 @@ Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 
 Plugin 'tpope/vim-commentary'
-Plugin 'Exafunction/codeium.vim'
-" Plugin 'github/copilot.vim'
+" Plugin 'Exafunction/codeium.vim'
+Plugin 'github/copilot.vim'
+Plugin 'joshdick/onedark.vim'
 
 call vundle#end()
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -202,6 +204,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-commentary'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'ryanoasis/vim-devicons'
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
