@@ -33,7 +33,7 @@ autocmd BufWritePre * %s/\s\+$//e
 autocmd FileType html,xml setlocal shiftwidth=2 tabstop=2
 
 " Enable automatic indentation for JavaScript and JSX files
-autocmd FileType javascript,*.jsx,*.tsx,typescriptreact,javascriptreact setlocal expandtab shiftwidth=2 tabstop=2
+autocmd FileType javascript,typescript,typescriptreact,javascriptreact,jsx,tsx setlocal expandtab shiftwidth=2 tabstop=2
 
 " Enable automatic indentation for CSS and SCSS files
 autocmd FileType css,scss setlocal shiftwidth=2 tabstop=2
@@ -204,6 +204,9 @@ Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-commentary'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'ryanoasis/vim-devicons'
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'sheerun/vim-polyglot'
 
 call plug#end()
