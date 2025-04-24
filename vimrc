@@ -258,7 +258,7 @@ let g:ruby_indent_assignment_style = 'variable'
 let g:ruby_indent_block_style = 'do'
 
 " double space for search by file name
-let mapleader = "\<Space>"
+let mapleader = "\."
 nnoremap <silent> <Space><Space> :FZF<CR>
 
 let g:rubocop_command = 'rubocop'
