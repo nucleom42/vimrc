@@ -360,13 +360,13 @@ inoremap <C-E> <C-O>$
 
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
 
-nnoremap <silent> 2 :tabn<CR>
+nnoremap <silent><leader>2 :tabn<CR>
 imap <C-f> 2 :tabn<CR>i
-nnoremap <silent> 1 :tabp<CR>
+nnoremap <silent><leader> 1 :tabp<CR>
 imap <C-f> 1 :tabp<CR>i
-nnoremap <silent> b :Git blame<CR>
-imap <leader>b :Git blame <CR>i
-nnoremap <silent> d :GitGutterDiffOrig<CR>
+nnoremap <silent><leader> b :Git blame<CR>
+imap <leader><leader>b :Git blame <CR>i
+nnoremap <silent><leader> d :GitGutterDiffOrig<CR>
 imap <leader>d :GitGutterDiffOrig <CR>i
 
 let s:salmon = "cc527a"
