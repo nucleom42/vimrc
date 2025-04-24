@@ -72,7 +72,7 @@ let g:solarized_termcolors = 16
 "   - Preview window on the right with 50% width
 "   - CTRL-/ will toggle preview window.
 " - Note that this array is passed as arguments to fzf#vim#with_preview function.
-" - To learn more about preview window options, see `--preview-window` section of `man fzf`.
+" - To learn more about preview window options, see --preview-window section of man fzf.
 let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 
 " Preview window on the upper side of the window with 40% height,
@@ -96,7 +96,7 @@ let g:fzf_commands_expect = 'alt-enter,ctrl-x'
 let g:fzf_action = {'enter': 'tabedit',}
 
 let g:LanguageClient_serverCommands = {
-			\ 'ruby': ['/Users/oleg/.rbenv/shims/solargraph', 'stdio'],
+			\ 'ruby': ['/Users/osaltykov/.rvm/gems/ruby-3.3.6/bin/solargraph', 'stdio'],
 			\ }
 
 let python_highlight_all=1
@@ -215,8 +215,8 @@ call plug#end()
 nnoremap <silent> <C-f> :ALEFix<CR>
 imap <C-f> <Esc> :ALEFix<CR>i
 
-nnoremap <silent> `q :below term zsh<CR>
-imap <C-f> `q :below term zsh<CR>i
+nnoremap <silent> q :below term zsh<CR>
+imap <C-f> q :below term zsh<CR>i
 
 " let g:ale_lint_on_save = 1
 let g:ale_set_loclist = 1
@@ -249,7 +249,7 @@ let g:ale_fixers = {
 			\  'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8'],
 			\}
 let g:ale_linters = {'ruby': ['rubocop', 'ruby'], 'python': ['flake8', 'pylint'], 'javascript': ['javascript', 'eslint'], 'html': ['prettier', 'html'], 'css': ['stylelint', 'css']}
-let g:ale_ruby_rubocop_executable = 'bin/rubocop'
+let g:ale_ruby_rubocop_executable = 'rubocop'
 let g:ruby_indent_assignment_style = 'variable'
 
 " vim-ruby
@@ -329,7 +329,7 @@ function! LookUp(text)
     endif
 endfunction
 
-noremap `s :LookUp __lu<CR>
+noremap s :LookUp __lu<CR>
 
 " Enable coc.nvim
 let g:coc_global_extensions = ['coc-tsserver']
@@ -352,22 +352,22 @@ function! ReplaceAll(args)
 	endif
 endfunction
 
-nnoremap <silent>`r :Replace __ __<CR>
-imap `r <Esc>:Replace __ __<CR>
+nnoremap <silent>r :Replace __ __<CR>
+imap <leader>r <Esc>:Replace __ __<CR>
 
 inoremap <C-A> <C-O>0
 inoremap <C-E> <C-O>$
 
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
 
-nnoremap <silent> `2 :tabn<CR>
-imap <C-f> `2 :tabn<CR>i
-nnoremap <silent> `1 :tabp<CR>
-imap <C-f> `1 :tabp<CR>i
-nnoremap <silent> `b :Git blame<CR>
-imap `b :Git blame <CR>i
-nnoremap <silent> `d :GitGutterDiffOrig<CR>
-imap `d :GitGutterDiffOrig <CR>i
+nnoremap <silent> 2 :tabn<CR>
+imap <C-f> 2 :tabn<CR>i
+nnoremap <silent> 1 :tabp<CR>
+imap <C-f> 1 :tabp<CR>i
+nnoremap <silent> b :Git blame<CR>
+imap <leader>b :Git blame <CR>i
+nnoremap <silent> d :GitGutterDiffOrig<CR>
+imap <leader>d :GitGutterDiffOrig <CR>i
 
 let s:salmon = "cc527a"
 let s:greeny = "3aafa9"
