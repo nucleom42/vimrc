@@ -131,8 +131,8 @@ Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 
 Plugin 'tpope/vim-commentary'
-" Plugin 'Exafunction/codeium.vim'
-Plugin 'github/copilot.vim'
+Plugin 'Exafunction/codeium.vim'
+" Plugin 'github/copilot.vim'
 Plugin 'joshdick/onedark.vim'
 
 call vundle#end()
