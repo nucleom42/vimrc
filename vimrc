@@ -211,6 +211,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'sheerun/vim-polyglot'
+Plug 'andymass/vim-matchup'
 
 call plug#end()
 
