@@ -21,6 +21,9 @@ set confirm
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
 
+set title
+autocmd BufEnter * let &titlestring = expand("%:t") | set title
+
 " max text length
 au BufRead,BufNewFile *.rb setlocal textwidth=120
 
@@ -376,5 +379,7 @@ let g:NERDTreeExtensionHighlightColor['rb'] = s:salmon
 let g:NERDTreeExtensionHighlightColor['erb'] = s:salmon
 
 
-highlight ColorColumnText cterm=underline ctermfg=red guifg=red guibg=NONE
-call matchadd('ColorColumnText', '\%121v', 100)
+highlight ColorColumnText cterm=underline ctermfg=none guifg=red guibg=NONE
+call matchadd('ColorColumnText', '\%>120v.\+', 100)
+
+
