@@ -329,7 +329,7 @@ function! LookUp(text)
     endif
 endfunction
 
-noremap s :LookUp __lu<CR>
+noremap <leader>s :LookUp __lu<CR>
 
 " Enable coc.nvim
 let g:coc_global_extensions = ['coc-tsserver']
