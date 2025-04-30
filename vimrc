@@ -21,6 +21,9 @@ set confirm
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
 
+set title
+autocmd BufEnter * let &titlestring = expand("%:t") | set title
+
 " max text length
 au BufRead,BufNewFile *.rb setlocal textwidth=120
 
@@ -157,7 +160,7 @@ let g:rg_highligh = 1
 "" Quick comment toggling
 noremap \ :Commentary<CR>
 autocmd FileType ruby setlocal commentstring=#\ %s
-
+let mapleader = "\."
 map - :NERDTreeToggle<CR>
 map <leader>r :NERDTreeFind<cr>
 " autocmd BufWinEnter * NERDTreeFind
@@ -167,7 +170,7 @@ map ] :NERDTreeFind<CR>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 " Ctags with Ctrl-P
-nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <leader>p :CtrlPTag<cr>
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -208,6 +211,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'sheerun/vim-polyglot'
+Plug 'andymass/vim-matchup'
 
 call plug#end()
 
@@ -258,7 +262,7 @@ let g:ruby_indent_assignment_style = 'variable'
 let g:ruby_indent_block_style = 'do'
 
 " double space for search by file name
-let mapleader = "\."
+
 nnoremap <silent> <Space><Space> :FZF<CR>
 
 let g:rubocop_command = 'rubocop'
@@ -329,7 +333,7 @@ function! LookUp(text)
     endif
 endfunction
 
-noremap s :LookUp __lu<CR>
+noremap <leader>s :LookUp __lu<CR>
 
 " Enable coc.nvim
 let g:coc_global_extensions = ['coc-tsserver']
@@ -364,10 +368,10 @@ nnoremap <silent><leader>2 :tabn<CR>
 imap <C-f> 2 :tabn<CR>i
 nnoremap <silent><leader> 1 :tabp<CR>
 imap <C-f> 1 :tabp<CR>i
-nnoremap <silent><leader> b :Git blame<CR>
-imap <leader><leader>b :Git blame <CR>i
-nnoremap <silent><leader> d :GitGutterDiffOrig<CR>
-imap <leader>d :GitGutterDiffOrig <CR>i
+nnoremap <silent><leader>gb :Git blame<CR>
+imap <leader>gb :Git blame <CR>i
+nnoremap <silent><leader>gd :GitGutterDiffOrig<CR>
+imap <leader>gd :GitGutterDiffOrig <CR>i
 
 let s:salmon = "cc527a"
 let s:greeny = "3aafa9"
@@ -376,5 +380,7 @@ let g:NERDTreeExtensionHighlightColor['rb'] = s:salmon
 let g:NERDTreeExtensionHighlightColor['erb'] = s:salmon
 
 
-highlight ColorColumnText cterm=underline ctermfg=red guifg=red guibg=NONE
-call matchadd('ColorColumnText', '\%121v', 100)
+highlight ColorColumnText cterm=underline ctermfg=none guifg=red guibg=NONE
+call matchadd('ColorColumnText', '\%>120v.\+', 100)
+
+
