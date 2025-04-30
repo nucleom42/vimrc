@@ -160,7 +160,7 @@ let g:rg_highligh = 1
 "" Quick comment toggling
 noremap \ :Commentary<CR>
 autocmd FileType ruby setlocal commentstring=#\ %s
-
+let mapleader = "\."
 map - :NERDTreeToggle<CR>
 map <leader>r :NERDTreeFind<cr>
 " autocmd BufWinEnter * NERDTreeFind
@@ -170,7 +170,7 @@ map ] :NERDTreeFind<CR>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 " Ctags with Ctrl-P
-nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <leader>p :CtrlPTag<cr>
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -262,7 +262,7 @@ let g:ruby_indent_assignment_style = 'variable'
 let g:ruby_indent_block_style = 'do'
 
 " double space for search by file name
-let mapleader = "\."
+
 nnoremap <silent> <Space><Space> :FZF<CR>
 
 let g:rubocop_command = 'rubocop'
@@ -368,10 +368,10 @@ nnoremap <silent><leader>2 :tabn<CR>
 imap <C-f> 2 :tabn<CR>i
 nnoremap <silent><leader> 1 :tabp<CR>
 imap <C-f> 1 :tabp<CR>i
-nnoremap <silent><leader> b :Git blame<CR>
-imap <leader><leader>b :Git blame <CR>i
-nnoremap <silent><leader> d :GitGutterDiffOrig<CR>
-imap <leader>d :GitGutterDiffOrig <CR>i
+nnoremap <silent><leader>gb :Git blame<CR>
+imap <leader>gb :Git blame <CR>i
+nnoremap <silent><leader>gd :GitGutterDiffOrig<CR>
+imap <leader>gd :GitGutterDiffOrig <CR>i
 
 let s:salmon = "cc527a"
 let s:greeny = "3aafa9"
