@@ -216,8 +216,8 @@ Plug 'andymass/vim-matchup'
 call plug#end()
 
 " ALE
-nnoremap <silent> <C-f> :ALEFix<CR>
-imap <C-f> <Esc> :ALEFix<CR>i
+nnoremap <silent> <leader>f :ALEFix<CR>
+imap <leader>f :ALEFix<CR>i
 
 nnoremap <silent> q :below term zsh<CR>
 imap <C-f> q :below term zsh<CR>i
