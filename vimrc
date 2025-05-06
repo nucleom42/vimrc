@@ -137,6 +137,7 @@ Plugin 'tpope/vim-commentary'
 " Plugin 'Exafunction/codeium.vim'
 Plugin 'github/copilot.vim'
 Plugin 'joshdick/onedark.vim'
+Plugin 'DanBradbury/copilot-chat.vim'
 
 call vundle#end()
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -165,6 +166,9 @@ map - :NERDTreeToggle<CR>
 map <leader>r :NERDTreeFind<cr>
 " autocmd BufWinEnter * NERDTreeFind
 map ] :NERDTreeFind<CR>
+" open AI chats
+nnoremap <leader>cp :CopilotChatOpen<CR>
+nnoremap <leader>cc :Codeium Chat<CR>
 
 " Ctrl-P configurations
 let g:ctrlp_map = '<c-p>'
