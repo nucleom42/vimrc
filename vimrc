@@ -134,8 +134,8 @@ Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 
 Plugin 'tpope/vim-commentary'
-Plugin 'Exafunction/codeium.vim'
-" Plugin 'github/copilot.vim'
+" Plugin 'Exafunction/codeium.vim'
+Plugin 'github/copilot.vim'
 Plugin 'joshdick/onedark.vim'
 Plugin 'DanBradbury/copilot-chat.vim'
 
@@ -196,7 +196,7 @@ autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 
 call plug#begin()
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pangloss/vim-javascript'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -357,7 +357,7 @@ endfunction
 nnoremap <leader>ct :call GenerateCTags()<CR>
 
 " Enable coc.nvim
-" let g:coc_global_extensions = ['coc-tsserver']
+let g:coc_global_extensions = ['coc-tsserver']
 
 " Customize HTML tag highlighting
 highlight HTMLTagDelimiter ctermfg=Blue guifg=Blue
