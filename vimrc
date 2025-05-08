@@ -296,7 +296,7 @@ function! NewFile(filename)
 	endif
 endfunction
 
-nnoremap <silent> cr :let @+=expand('%')<CR>:echo 'Relative path copied to clipboard'<CR>
+nnoremap <leader>cr :let @+=expand('%')<CR>:echo 'Relative path copied to clipboard'<CR>
 " Define a custom command to open a new tab and prompt for a text to search
 command! -nargs=1 LookUp call LookUp(<f-args>)
 
@@ -337,7 +337,24 @@ function! LookUp(text)
     endif
 endfunction
 
-noremap <leader>s :LookUp __lu<CR>
+" Function to generate ctags depending on the project language
+function! GenerateCTags()
+  if filereadable('Gemfile')
+    " Ruby project
+    silent! !ctags -R --languages=ruby --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
+  elseif filereadable('requirements.txt') || filereadable('pyproject.toml') || filereadable('setup.py')
+    " Python project
+    silent! !ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./tags $(
+          \ python3 -c "import os, sys; print(' '.join(d for d in sys.path if os.path.isdir(d)))"
+          \ )
+  else
+    " Fallback
+    silent! !ctags -R --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
+	endif
+endfunction
+
+" Map <leader>ct to run GenerateCTags
+nnoremap <leader>ct :call GenerateCTags()<CR>
 
 " Enable coc.nvim
 let g:coc_global_extensions = ['coc-tsserver']
