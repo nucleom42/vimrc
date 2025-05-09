@@ -163,7 +163,7 @@ noremap \ :Commentary<CR>
 autocmd FileType ruby setlocal commentstring=#\ %s
 let mapleader = "\."
 map - :NERDTreeToggle<CR>
-map <leader>r :NERDTreeFind<cr>
+map <leader>nf :NERDTreeFind<cr>
 " autocmd BufWinEnter * NERDTreeFind
 map ] :NERDTreeFind<CR>
 " open AI chats
@@ -220,10 +220,10 @@ Plug 'andymass/vim-matchup'
 call plug#end()
 
 " ALE
-nnoremap <leader> <leader>f :ALEFix<CR>
+nnoremap <silent> <leader>f :ALEFix<CR>
 imap <leader>f :ALEFix<CR>i
 
-nnoremap <leader> q :below term zsh<CR>
+nnoremap <silent><leader> q :below term zsh<CR>
 imap <C-f> q :below term zsh<CR>i
 
 " let g:ale_lint_on_save = 1
@@ -383,11 +383,11 @@ inoremap <C-E> <C-O>$
 
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
 
-nnoremap <leader><leader>2 :tabn<CR>
+nnoremap <silent><leader>2 :tabn<CR>
 imap <C-f> 2 :tabn<CR>i
-nnoremap <leader><leader> 1 :tabp<CR>
+nnoremap <silent><leader> 1 :tabp<CR>
 imap <C-f> 1 :tabp<CR>i
-nnoremap <leader><leader>gb :Git blame<CR>
+nnoremap <silent><leader>gb :Git blame<CR>
 imap <leader>gb :Git blame <CR>i
 nnoremap <silent><leader>gd :GitGutterDiffOrig<CR>
 imap <leader>gd :GitGutterDiffOrig <CR>i
