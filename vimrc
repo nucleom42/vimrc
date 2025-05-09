@@ -38,7 +38,7 @@ autocmd FileType html,xml setlocal shiftwidth=2 tabstop=2
 " Enable automatic indentation for JavaScript and JSX files
 autocmd FileType javascript,typescript,typescriptreact,javascriptreact,jsx,tsx setlocal expandtab shiftwidth=2 tabstop=2
 
-" Enable automatic indentation for CSS and SCSS files
+" Enable automatic indentation for CSS and SCSS fies
 autocmd FileType css,scss setlocal shiftwidth=2 tabstop=2
 
 " Enable automatic indentation for JSON files
@@ -220,10 +220,10 @@ Plug 'andymass/vim-matchup'
 call plug#end()
 
 " ALE
-nnoremap <silent> <leader>f :ALEFix<CR>
+nnoremap <leader> <leader>f :ALEFix<CR>
 imap <leader>f :ALEFix<CR>i
 
-nnoremap <silent> q :below term zsh<CR>
+nnoremap <leader> q :below term zsh<CR>
 imap <C-f> q :below term zsh<CR>i
 
 " let g:ale_lint_on_save = 1
@@ -301,10 +301,6 @@ nnoremap <leader>cr :let @+=expand('%')<CR>:echo 'Relative path copied to clipbo
 command! -nargs=1 LookUp call LookUp(<f-args>)
 
 " Function to open a prompt for a search text
-
-
-
-
 function! LookUp(text)
     " Prompt the user for the search text
     let text = input('Search: ')
@@ -337,20 +333,22 @@ function! LookUp(text)
     endif
 endfunction
 
+nnoremap <silent> <leader>s :call LookUp('')<CR>
+
 " Function to generate ctags depending on the project language
 function! GenerateCTags()
-  if filereadable('Gemfile')
-    " Ruby project
-    silent! !ctags -R --languages=ruby --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
-  elseif filereadable('requirements.txt') || filereadable('pyproject.toml') || filereadable('setup.py')
-    " Python project
+		if filereadable('Gemfile')
+    		" Ruby project
+    		silent! !ctags -R --languages=ruby --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
+  	elseif filereadable('requirements.txt') || filereadable('pyproject.toml') || filereadable('setup.py')
+    		" Python project
     silent! !ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./tags $(
-          \ python3 -c "import os, sys; print(' '.join(d for d in sys.path if os.path.isdir(d)))"
-          \ )
-  else
-    " Fallback
-    silent! !ctags -R --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
-	endif
+						\ python3 -c "import os, sys; print(' '.join(d for d in sys.path if os.path.isdir(d)))"
+						\ )
+  	else
+    		" Fallback
+    		silent! !ctags -R --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
+		endif
 endfunction
 
 " Map <leader>ct to run GenerateCTags
@@ -377,7 +375,7 @@ function! ReplaceAll(args)
 	endif
 endfunction
 
-nnoremap <silent>r :Replace __ __<CR>
+nnoremap <leader>r :Replace __ __<CR>
 imap <leader>r <Esc>:Replace __ __<CR>
 
 inoremap <C-A> <C-O>0
@@ -385,11 +383,11 @@ inoremap <C-E> <C-O>$
 
 autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
 
-nnoremap <silent><leader>2 :tabn<CR>
+nnoremap <leader><leader>2 :tabn<CR>
 imap <C-f> 2 :tabn<CR>i
-nnoremap <silent><leader> 1 :tabp<CR>
+nnoremap <leader><leader> 1 :tabp<CR>
 imap <C-f> 1 :tabp<CR>i
-nnoremap <silent><leader>gb :Git blame<CR>
+nnoremap <leader><leader>gb :Git blame<CR>
 imap <leader>gb :Git blame <CR>i
 nnoremap <silent><leader>gd :GitGutterDiffOrig<CR>
 imap <leader>gd :GitGutterDiffOrig <CR>i
