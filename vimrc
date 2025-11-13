@@ -168,8 +168,8 @@ map <leader>nf :NERDTreeFind<cr>
 nnoremap <leader>cp :CopilotChatOpen<CR>
 nnoremap <leader>cc :Codeium Chat<CR>
 " map 2 lines up down
-nnoremap <leader><Up> 2k
-nnoremap <leader><Down> 2j
+nnoremap <leader><Up> 4k
+nnoremap <leader><Down> 4j
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
