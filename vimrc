@@ -65,8 +65,7 @@ call pathogen#infect()
 let NERDTreeShowHidden=1
 set rtp+=~/.vim/bundle/Vundle.vim
 let g:deoplete#enable_at_startup = 1
-" set ctrlP plugin
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+
 " allow vim to jump through directories for ctags
 set tags=tags;/
 let g:snipMate = { 'snippet_version' : 1 }
@@ -164,17 +163,9 @@ autocmd FileType ruby setlocal commentstring=#\ %s
 let mapleader = "\."
 map - :NERDTreeToggle<CR>
 map <leader>nf :NERDTreeFind<cr>
-" autocmd BufWinEnter * NERDTreeFind
-map ] :NERDTreeFind<CR>
 " open AI chats
 nnoremap <leader>cp :CopilotChatOpen<CR>
 nnoremap <leader>cc :Codeium Chat<CR>
-
-" Ctrl-P configurations
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-" Ctags with Ctrl-P
-nnoremap <leader>p :CtrlPTag<cr>
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
