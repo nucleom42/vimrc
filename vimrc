@@ -15,7 +15,6 @@ set tags=tags
 set hlsearch
 set encoding=UTF-8
 nnoremap <CR> :noh<CR>
-nnoremap <silent> <C-]> :tab tag <C-r><C-w><CR>
 " promtp if file wasn't saved before exit
 set confirm
 autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
@@ -143,6 +142,9 @@ let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
 let g:NERDTreePatternMatchHighlightFullName = 1
 
+" remap go back to def
+nnoremap <C-[> <C-t>
+
 " remap envoke key
 nnoremap <silent> <C-z> :FZF<CR>
 nnoremap <silent> <C-t> :Windows<CR>
@@ -153,6 +155,7 @@ nnoremap <silent> <C-q> :q<CR>
 imap <C-q> <Esc>:q<CR>
 nnoremap <silent> <C-s> :w<CR>
 imap <C-s> <Esc>:w<CR>i
+
 
 
 " Ripgrepp
