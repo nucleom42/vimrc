@@ -156,8 +156,6 @@ imap <C-q> <Esc>:q<CR>
 nnoremap <silent> <C-s> :w<CR>
 imap <C-s> <Esc>:w<CR>i
 
-
-
 " Ripgrepp
 let g:rg_highligh = 1
 "" Quick comment toggling
@@ -169,6 +167,9 @@ map <leader>nf :NERDTreeFind<cr>
 " open AI chats
 nnoremap <leader>cp :CopilotChatOpen<CR>
 nnoremap <leader>cc :Codeium Chat<CR>
+" map 2 lines up down
+nnoremap <leader><Up> 2k
+nnoremap <leader><Down> 2j
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
