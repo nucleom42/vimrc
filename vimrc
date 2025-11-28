@@ -288,33 +288,49 @@ function! SetupCustomRg()
   command! -bang -nargs=* Rg call s:rg(<q-args>, <bang>0)
 endfunction
 
+
+
 function! s:rg(args, bang)
   " Determine search term (arg or word under cursor)
   let l:query = empty(a:args) ? expand('<cword>') : a:args
   let l:qs_escaped = substitute(l:query, "'", "'\"'\"'", 'g')
 
-  " Ripgrep command: whole project
+  " Ripgrep command
   let l:rg_cmd = 'rg --column --line-number --no-heading --color=always --smart-case ' . shellescape(l:query)
 
-  " Preview command: bat with highlight of search term
+  " Bat preview with highlighted match
   let l:perl_script = "perl -pe 's/\\Q" . l:qs_escaped . "\\E/\\e[43m\$&\\e[0m/gi'"
-  let l:raw_preview = 'bat --style=numbers --color=always --line-range :500 {1} | ' . l:perl_script
+  let l:raw_preview = 'bat --style=numbers --color=always {1} | ' . l:perl_script
   let l:preview_cmd = 'bash -c ' . shellescape(l:raw_preview)
 
-  " FZF options: bottom 50% of Vim, preview right 50%
-  let l:opts = '--ansi --layout=reverse --height=50% ' .
+  " FZF options
+  let l:opts = '--ansi ' .
         \ '--preview ' . shellescape(l:preview_cmd) .
-        \ ' --preview-window=right:50%:wrap ' .
-        \ '--bind=up:up,down:down,change:preview-up'
+        \ ' --preview-window=down:50%:wrap ' .
+        \ '--layout=reverse' .
+        \ ' --bind=up:up,down:down,change:preview-up'
 
-  " Run FZF with ripgrep results
+  " Floating window configuration (center popup)
+  let l:win = {
+        \ 'width': 0.95,
+        \ 'height': 0.90,
+        \ 'border': 'rounded',
+        \ 'highlight': 'Normal'
+        \ }
+
+  " Run fzf
   call fzf#vim#grep(
         \ l:rg_cmd,
         \ 1,
-        \ { 'options': l:opts },
+        \ {
+        \   'options': l:opts,
+        \   'window': l:win
+        \ },
         \ a:bang
         \ )
 endfunction
+
+
 
 " Remap Tab key to select first autocompletion suggestion
 inoremap <expr> <Tab> pumvisible() ? "\<C-y>" : "\<Tab>"
@@ -348,31 +364,6 @@ function! LookUp(text)
 
     " Call your custom s:rg function with the input
     call s:rg(l:text, 0)
-    " Exit if the input is empty
-    " if text != ''
-    "     " Escape special regex characters for Ripgrep
-    "     let escaped_text = escape(text, '.\*[]^$(){}+?|\\')
-
-    "     " Normalize newlines and whitespace to match any whitespace
-    "     let normalized_text = substitute(escaped_text, '\n\+', '\\s*', 'g')
-    "     let normalized_text = substitute(normalized_text, '\s\+', '\\s*', 'g')
-
-    "     " Wrap the search term in single quotes to prevent shell interpretation issues
-    "     let search_term = "'" . normalized_text . "'"
-        " Construct the ripgrep command
-        " let command = "Rg -U --vimgrep --no-heading --column " . search_term . " --glob='!*tags*'"
-
-        " " Execute the ripgrep command and populate the Quickfix list
-        " cexpr system(command)
-
-        " " Open the Quickfix window if there are results
-        " if len(getqflist()) > 0
-        "     copen
-        " else
-        "     redraw " Clear previous input or text
-        "     echo "No results found"
-        " endif
-    " endif
 endfunction
 
 nnoremap <silent> <leader>s :call LookUp('')<CR>
