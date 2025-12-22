@@ -377,7 +377,7 @@ function! LookUp(text)
     call s:rg(l:text, 0)
 endfunction
 
-nnoremap <silent> <leader>s :call LookUp('')<CR>
+nnoremap <silent><leader>ss :call LookUp('')<CR>
 
 " Function to generate ctags depending on the project language
 function! GenerateCTags()
@@ -396,7 +396,7 @@ function! GenerateCTags()
 endfunction
 
 " Map <leader>ct to run GenerateCTags
-nnoremap <leader>ct :call GenerateCTags()<CR>
+nnoremap <leader>gt :call GenerateCTags()<CR>
 
 " Enable coc.nvim
 let g:coc_global_extensions = ['coc-tsserver']
@@ -419,8 +419,8 @@ function! ReplaceAll(args)
 	endif
 endfunction
 
-nnoremap <leader>r :Replace __ __<CR>
-imap <leader>r <Esc>:Replace __ __<CR>
+nnoremap <leader>rr :Replace __ __<CR>
+imap <leader>rr <Esc>:Replace __ __<CR>
 
 inoremap <C-A> <C-O>0
 inoremap <C-E> <C-O>$
