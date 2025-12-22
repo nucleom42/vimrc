@@ -172,6 +172,19 @@ nnoremap <leader>cc :Codeium Chat<CR>
 " map 2 lines up down
 nnoremap <leader><Up> 4k
 nnoremap <leader><Down> 4j
+" Horizontal split
+nnoremap <leader>wh :split<CR>
+" Vertical split
+nnoremap <leader>wv :vsplit<CR>
+" Increase window height by 2
+nnoremap <leader>w' :resize +5<CR>
+" Decrease window height by 2
+nnoremap <leader>w/ :resize -5<CR>
+nnoremap <leader>w] :vertical resize +5<CR>
+nnoremap <leader>w[ :vertical resize -5<CR>
+
+
+
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -287,8 +300,6 @@ function! SetupCustomRg()
   silent! delcommand Rg
   command! -bang -nargs=* Rg call s:rg(<q-args>, <bang>0)
 endfunction
-
-
 
 function! s:rg(args, bang)
   " Determine search term (arg or word under cursor)
