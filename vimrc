@@ -56,7 +56,7 @@ au BufRead,BufNewFile *.tsx set filetype=typescriptreact
 
 let g:onedark_color_overrides = {"cursor_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "visual_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}}
 
-let g:gitgutter_grep = 'grep'
+" let g:gitgutter_grep = 'grep'
 colorscheme onedark
 
 "Pathogen
