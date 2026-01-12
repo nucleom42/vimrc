@@ -56,6 +56,7 @@ au BufRead,BufNewFile *.tsx set filetype=typescriptreact
 
 let g:onedark_color_overrides = {"cursor_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "visual_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}}
 
+let g:gitgutter_grep = 'grep'
 colorscheme onedark
 
 "Pathogen
@@ -99,7 +100,7 @@ let g:fzf_action = {'enter': 'tabedit',}
 let $FZF_DEFAULT_OPTS='--preview="bat --style=numbers --color=always --line-range :500 {}" --bind=change:preview-up'
 
 let g:LanguageClient_serverCommands = {
-			\ 'ruby': ['/Users/osaltykov/.rvm/gems/ruby-3.3.6/bin/solargraph', 'stdio'],
+			\ 'ruby': ['/Users/oleg/.rbenv/shims/solargraph', 'stdio'],
 			\ }
 
 let python_highlight_all=1
@@ -134,8 +135,8 @@ Plugin 'nvie/vim-flake8'
 Plugin 'davidhalter/jedi-vim'
 
 Plugin 'tpope/vim-commentary'
-" Plugin 'Exafunction/codeium.vim'
-Plugin 'github/copilot.vim'
+Plugin 'Exafunction/codeium.vim'
+" Plugin 'github/copilot.vim'
 Plugin 'joshdick/onedark.vim'
 Plugin 'DanBradbury/copilot-chat.vim'
 
@@ -183,8 +184,9 @@ nnoremap <leader>w/ :resize -5<CR>
 nnoremap <leader>w] :vertical resize +5<CR>
 nnoremap <leader>w[ :vertical resize -5<CR>
 
-
-
+" Codeium enable / disable
+nnoremap <leader>ce :Codeium Enable<CR>
+nnoremap <leader>cd :Codeium Disable<CR>
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -249,11 +251,12 @@ let g:ale_fixers = {
 			\  'javascript': [
 			\    'remove_trailing_lines',
 			\    'trim_whitespace',
-			\    'eslint'
+			\    'eslint',
+			\    'prettier'
 			\  ],
-			\  'javascript.jsx': ['eslint'],
-			\  'typescript.tsx': ['eslint'],
-			\  'typescript': ['eslint'],
+			\  'typescriptreact': ['eslint', 'prettier'],
+			\  'javascriptreact': ['eslint', 'prettier'],
+			\  'typescript': ['eslint', 'prettier'],
 			\  'html': [
 			\    'remove_trailing_lines',
 			\    'prettier',
