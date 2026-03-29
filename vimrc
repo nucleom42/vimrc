@@ -11,278 +11,229 @@ set clipboard^=unnamed
 set mouse=a
 set backspace=indent,eol,start
 set laststatus=2
-set tags=tags
+set tags=tags;/
 set hlsearch
 set encoding=UTF-8
-nnoremap <CR> :noh<CR>
-" promtp if file wasn't saved before exit
 set confirm
-autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
-autocmd FileType eruby setlocal expandtab shiftwidth=2 tabstop=2
-
 set title
+
 autocmd BufEnter * let &titlestring = expand("%:t") | set title
 
-" max text length
-au BufRead,BufNewFile *.rb setlocal textwidth=120
 
-au BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+call plug#begin('~/.vim/plugged')
 
-" get rid of trailing whitespace on :w
-autocmd BufWritePre * %s/\s\+$//e
+" Core
+Plug 'VundleVim/Vundle.vim'
+Plug 'preservim/nerdtree'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
 
-" Enable automatic indentation for HTML and XML files
-autocmd FileType html,xml setlocal shiftwidth=2 tabstop=2
+" Git
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 
-" Enable automatic indentation for JavaScript and JSX files
-autocmd FileType javascript,typescript,typescriptreact,javascriptreact,jsx,tsx setlocal expandtab shiftwidth=2 tabstop=2
+" Ruby / Rails
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-endwise'
 
-" Enable automatic indentation for CSS and SCSS fies
-autocmd FileType css,scss setlocal shiftwidth=2 tabstop=2
+" Snippets
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
 
-" Enable automatic indentation for JSON files
-autocmd FileType json setlocal shiftwidth=2 tabstop=2
-
-" Enable automatic indentation for YAML files
-autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
-
-" Use Prettier for automatic code formatting (you need to have Prettier installed)
-autocmd FileType javascript,jsx,tsx,html,css,scss autocmd BufWritePre <buffer> :silent! %!prettier --stdin-filepath=% --write
-
-" Set vim-jsx-pretty as the syntax highlighter for JSX/React
-
-au BufRead,BufNewFile *.jsx set filetype=javascriptreact
-au BufRead,BufNewFile *.tsx set filetype=typescriptreact
-
-let g:onedark_color_overrides = {"cursor_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}, "visual_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}}
-
-" let g:gitgutter_grep = 'grep'
-colorscheme onedark
-
-"Pathogen
-" set nocp
-call pathogen#infect()
-let NERDTreeShowHidden=1
-set rtp+=~/.vim/bundle/Vundle.vim
-let g:deoplete#enable_at_startup = 1
-
-" allow vim to jump through directories for ctags
-set tags=tags;/
-let g:snipMate = { 'snippet_version' : 1 }
-let g:solarized_termcolors = 16
-" This is the default option:
-"   - Preview window on the right with 50% width
-"   - CTRL-/ will toggle preview window.
-" - Note that this array is passed as arguments to fzf#vim#with_preview function.
-" - To learn more about preview window options, see --preview-window section of man fzf.
-let g:fzf_preview_window = ['right:50%', 'ctrl-/']
-
-" Preview window on the upper side of the window with 40% height,
-" hidden by default, ctrl-/ to toggle
-let g:fzf_preview_window = ['up:40%:hidden', 'ctrl-/']
-
-" Empty value to disable preview window altogether
-let g:fzf_preview_window = []
-" [Buffers] Jump to the existing window if possible
-let g:fzf_buffers_jump = 1
-
-" [[B]Commits] Customize the options used by 'git log':
-let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-
-" [Tags] Command to generate tags file
-let g:fzf_tags_command = 'ctags -R'
-
-" [Commands] --expect expression for directly executing the command
-let g:fzf_commands_expect = 'alt-enter,ctrl-x'
-
-let g:fzf_action = {'enter': 'tabedit',}
-
-let $FZF_DEFAULT_OPTS='--preview="bat --style=numbers --color=always --line-range :500 {}" --bind=change:preview-up'
-
-let g:LanguageClient_serverCommands = {
-			\ 'ruby': ['/Users/oleg/.rbenv/shims/solargraph', 'stdio'],
-			\ }
-
-let python_highlight_all=1
-call vundle#begin()
-Plugin 'preservim/nerdtree'
-Plugin 'VundleVim/Vundle.vim'
-" show git diif in vim
-Plugin 'airblade/vim-gitgutter'
-
-Bundle 'vim-ruby/vim-ruby'
-Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-endwise'
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-" Fzg plugin
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
-Plugin 'airblade/vim-rooter'
-Plugin 'tmux-plugins/vim-tmux'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-
-Plugin 'dense-analysis/ale'
-" Plugin 'scrooloose/nerdtree'
-Plugin 'jremmen/vim-ripgrep'
-
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'nvie/vim-flake8'
-Plugin 'davidhalter/jedi-vim'
-
-Plugin 'tpope/vim-commentary'
-Plugin 'Exafunction/codeium.vim'
-" Plugin 'github/copilot.vim'
-Plugin 'joshdick/onedark.vim'
-Plugin 'DanBradbury/copilot-chat.vim'
-
-call vundle#end()
-let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeExactMatchHighlightFullName = 1
-let g:NERDTreePatternMatchHighlightFullName = 1
-
-" remap go back to def
-nnoremap <C-[> <C-t>
-
-" remap envoke key
-nnoremap <silent> <C-z> :FZF<CR>
-nnoremap <silent> <C-t> :Windows<CR>
-nnoremap <silent> <C-c> :Buffers<CR>
-nnoremap <silent> <C-x> :Rg<CR>
-" remap close window
-nnoremap <silent> <C-q> :q<CR>
-imap <C-q> <Esc>:q<CR>
-nnoremap <silent> <C-s> :w<CR>
-imap <C-s> <Esc>:w<CR>i
-
-" Ripgrepp
-let g:rg_highligh = 1
-"" Quick comment toggling
-noremap \ :Commentary<CR>
-autocmd FileType ruby setlocal commentstring=#\ %s
-let mapleader = "\."
-map - :NERDTreeToggle<CR>
-map <leader>nf :NERDTreeFind<cr>
-" open AI chats
-nnoremap <leader>cp :CopilotChatOpen<CR>
-nnoremap <leader>cc :Codeium Chat<CR>
-" map 2 lines up down
-nnoremap <leader><Up> 4k
-nnoremap <leader><Down> 4j
-" Horizontal split
-nnoremap <leader>wh :split<CR>
-" Vertical split
-nnoremap <leader>wv :vsplit<CR>
-" Increase window height by 2
-nnoremap <leader>w' :resize +5<CR>
-" Decrease window height by 2
-nnoremap <leader>w/ :resize -5<CR>
-nnoremap <leader>w] :vertical resize +5<CR>
-nnoremap <leader>w[ :vertical resize -5<CR>
-
-" Codeium enable / disable
-nnoremap <leader>ce :Codeium Enable<CR>
-nnoremap <leader>cd :Codeium Disable<CR>
-
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-			\ { 'fg':      ['fg', 'Normal'],
-			\ 'bg':      ['bg', 'Normal'],
-			\ 'hl':      ['fg', 'Comment'],
-			\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-			\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-			\ 'hl+':     ['fg', 'Statement'],
-			\ 'info':    ['fg', 'PreProc'],
-			\ 'border':  ['fg', 'Ignore'],
-			\ 'prompt':  ['fg', 'Conditional'],
-			\ 'pointer': ['fg', 'Exception'],
-			\ 'marker':  ['fg', 'Keyword'],
-			\ 'spinner': ['fg', 'Label'],
-			\ 'header':  ['fg', 'Comment'] }
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-
-call plug#begin()
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'pangloss/vim-javascript'
+" FZF
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'mattn/emmet-vim'
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'tpope/vim-projectionist'
-Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-rooter'
+
+" Search
+Plug 'jremmen/vim-ripgrep'
+
+" Airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'itchyny/lightline.vim'
-" Plug 'mxw/vim-jsx'
+
+" Linting / Fixing
+Plug 'dense-analysis/ale'
+Plug 'vim-syntastic/syntastic'
+
+" Python
+Plug 'vim-scripts/indentpython.vim'
+Plug 'nvie/vim-flake8'
+Plug 'davidhalter/jedi-vim'
+
+" Comments
 Plug 'tpope/vim-commentary'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'ryanoasis/vim-devicons'
+
+" AI
+Plug 'Exafunction/codeium.vim'
+Plug 'DanBradbury/copilot-chat.vim'
+
+" Theme
+Plug 'joshdick/onedark.vim'
+
+" JS / TS / JSX
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'sheerun/vim-polyglot'
+
+" CSS
+Plug 'hail2u/vim-css3-syntax'
+
+" HTML
+Plug 'mattn/emmet-vim'
+
+" Formatting
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+
+" Tags
+Plug 'ludovicchabant/vim-gutentags'
+
+" Project
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-fugitive'
+
+" COC
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Misc
+Plug 'tmux-plugins/vim-tmux'
 Plug 'andymass/vim-matchup'
 
 call plug#end()
 
+" ============================================================
+" Colorscheme
+" ============================================================
+let g:onedark_color_overrides = {
+      \ "cursor_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"},
+      \ "visual_grey": {"gui": "#63f542", "cterm": "155", "cterm16": "10"}
+      \ }
+colorscheme onedark
+
+" ============================================================
+" Indentation by filetype
+" ============================================================
+autocmd FileType ruby                                    setlocal expandtab shiftwidth=2 tabstop=2
+autocmd FileType eruby                                   setlocal expandtab shiftwidth=2 tabstop=2
+autocmd FileType html,xml                                setlocal shiftwidth=2 tabstop=2
+autocmd FileType javascript,typescript,typescriptreact,javascriptreact,jsx,tsx setlocal expandtab shiftwidth=2 tabstop=2
+autocmd FileType css,scss                                setlocal shiftwidth=2 tabstop=2
+autocmd FileType json                                    setlocal shiftwidth=2 tabstop=2
+autocmd FileType yaml                                    setlocal shiftwidth=2 tabstop=2
+
+au BufRead,BufNewFile *.rb  setlocal textwidth=120
+au BufNewFile,BufRead *.py  setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+au BufRead,BufNewFile *.jsx set filetype=javascriptreact
+au BufRead,BufNewFile *.tsx set filetype=typescriptreact
+
+let python_highlight_all=1
+
+" ============================================================
+" NERDTree
+" ============================================================
+let NERDTreeShowHidden=1
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
+
+let s:salmon = "cc527a"
+let s:greeny = "3aafa9"
+let g:NERDTreeExtensionHighlightColor = {}
+let g:NERDTreeExtensionHighlightColor['rb']  = s:salmon
+let g:NERDTreeExtensionHighlightColor['erb'] = s:salmon
+
+" ============================================================
+" FZF
+" ============================================================
+let g:fzf_preview_window = ['up:40%:hidden', 'ctrl-/']
+let g:fzf_buffers_jump = 1
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+let g:fzf_tags_command = 'ctags -R'
+let g:fzf_commands_expect = 'alt-enter,ctrl-x'
+let g:fzf_action = {'enter': 'tabedit'}
+
+let $FZF_DEFAULT_OPTS='--preview="bat --style=numbers --color=always --line-range :500 {}" --bind=change:preview-up'
+
+let g:fzf_colors = {
+      \ 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] }
+
+" ============================================================
 " ALE
-nnoremap <silent> <leader>f :ALEFix<CR>
-imap <leader>f :ALEFix<CR>i
-
-nnoremap <silent><leader> q :below term zsh<CR>
-imap <C-f> q :below term zsh<CR>i
-
-" let g:ale_lint_on_save = 1
+" ============================================================
 let g:ale_set_loclist = 1
-let g:gutentags_enabled = 1
 let g:ale_ruby_rubocop_config_file = '.rubocop.yml'
-let g:ale_fixers = {
-			\  'ruby': [
-			\    'remove_trailing_lines',
-			\    'trim_whitespace',
-			\    'rubocop'
-			\  ],
-			\  'javascript': [
-			\    'remove_trailing_lines',
-			\    'trim_whitespace',
-			\    'eslint',
-			\    'prettier'
-			\  ],
-			\  'typescriptreact': ['eslint', 'prettier'],
-			\  'javascriptreact': ['eslint', 'prettier'],
-			\  'typescript': ['eslint', 'prettier'],
-			\  'html': [
-			\    'remove_trailing_lines',
-			\    'prettier',
-			\    'trim_whitespace'
-			\  ],
-			\  'css': [
-			\    'trim_whitespace',
-			\    'stylelint',
-			\    'remove_trailing_lines'
-			\  ],
-			\  'python': ['remove_trailing_lines', 'trim_whitespace', 'autopep8'],
-			\}
-let g:ale_linters = {'ruby': ['rubocop', 'ruby'], 'python': ['flake8', 'pylint'], 'javascript': ['javascript', 'eslint'], 'html': ['prettier', 'html'], 'css': ['stylelint', 'css']}
 let g:ale_ruby_rubocop_executable = 'rubocop'
-let g:ruby_indent_assignment_style = 'variable'
 
+let g:ale_fixers = {
+      \ 'ruby':            ['remove_trailing_lines', 'trim_whitespace', 'rubocop'],
+      \ 'javascript':      ['remove_trailing_lines', 'trim_whitespace', 'eslint', 'prettier'],
+      \ 'typescriptreact': ['eslint', 'prettier'],
+      \ 'javascriptreact': ['eslint', 'prettier'],
+      \ 'typescript':      ['eslint', 'prettier'],
+      \ 'html':            ['remove_trailing_lines', 'prettier', 'trim_whitespace'],
+      \ 'css':             ['trim_whitespace', 'stylelint', 'remove_trailing_lines'],
+      \ 'python':          ['remove_trailing_lines', 'trim_whitespace', 'autopep8'],
+      \ }
+
+let g:ale_linters = {
+      \ 'ruby':       ['rubocop', 'ruby'],
+      \ 'python':     ['flake8', 'pylint'],
+      \ 'javascript': ['eslint'],
+      \ 'html':       ['prettier', 'html'],
+      \ 'css':        ['stylelint', 'css'],
+      \ }
+
+" ============================================================
 " vim-ruby
+" ============================================================
 let g:ruby_indent_access_modifier_style = 'normal'
-let g:ruby_indent_assignment_style = 'variable'
-let g:ruby_indent_block_style = 'do'
+let g:ruby_indent_assignment_style      = 'variable'
+let g:ruby_indent_block_style          = 'do'
 
-" double space for search by file name
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading    = 1
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails             = 1
+autocmd FileType ruby setlocal commentstring=#\ %s
 
-nnoremap <silent> <Space><Space> :FZF<CR>
+" ============================================================
+" Gutentags
+" ============================================================
+let g:gutentags_enabled = 1
 
-let g:rubocop_command = 'rubocop'
+" ============================================================
+" Snipmate
+" ============================================================
+let g:snipMate = { 'snippet_version' : 1 }
+
+" ============================================================
+" Gitgutter
+" ============================================================
+let g:gitgutter_grep = ''
+
+" ============================================================
+" COC
+" ============================================================
+let g:coc_global_extensions = ['coc-tsserver']
+
+" ============================================================
+" Lightline
+" ============================================================
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
@@ -293,7 +244,9 @@ let g:lightline = {
       \ },
       \ }
 
-
+" ============================================================
+" Ripgrep custom function
+" ============================================================
 augroup FixRgOverride
   autocmd!
   autocmd VimEnter * call SetupCustomRg()
@@ -305,148 +258,171 @@ function! SetupCustomRg()
 endfunction
 
 function! s:rg(args, bang)
-  " Determine search term (arg or word under cursor)
-  let l:query = empty(a:args) ? expand('<cword>') : a:args
+  let l:query      = empty(a:args) ? expand('<cword>') : a:args
   let l:qs_escaped = substitute(l:query, "'", "'\"'\"'", 'g')
-
-  " Ripgrep command
-  let l:rg_cmd = 'rg --column --line-number --no-heading --color=always --smart-case ' . shellescape(l:query)
-
-  " Bat preview with highlighted match
+  let l:rg_cmd     = 'rg --column --line-number --no-heading --color=always --smart-case ' . shellescape(l:query)
   let l:perl_script = "perl -pe 's/\\Q" . l:qs_escaped . "\\E/\\e[43m\$&\\e[0m/gi'"
   let l:raw_preview = 'bat --style=numbers --color=always {1} | ' . l:perl_script
   let l:preview_cmd = 'bash -c ' . shellescape(l:raw_preview)
-
-  " FZF options
   let l:opts = '--ansi ' .
         \ '--preview ' . shellescape(l:preview_cmd) .
         \ ' --preview-window=down:50%:wrap ' .
         \ '--layout=reverse' .
         \ ' --bind=up:up,down:down,change:preview-up'
-
-  " Floating window configuration (center popup)
   let l:win = {
-        \ 'width': 0.95,
-        \ 'height': 0.90,
-        \ 'border': 'rounded',
-        \ 'highlight': 'Normal'
+        \ 'width': 0.95, 'height': 0.90,
+        \ 'border': 'rounded', 'highlight': 'Normal'
         \ }
-
-  " Run fzf
-  call fzf#vim#grep(
-        \ l:rg_cmd,
-        \ 1,
-        \ {
-        \   'options': l:opts,
-        \   'window': l:win
-        \ },
-        \ a:bang
-        \ )
+  call fzf#vim#grep(l:rg_cmd, 1, {'options': l:opts, 'window': l:win}, a:bang)
 endfunction
 
+let g:rg_highligh = 1
 
+" ============================================================
+" Custom functions
+" ============================================================
 
-" Remap Tab key to select first autocompletion suggestion
-inoremap <expr> <Tab> pumvisible() ? "\<C-y>" : "\<Tab>"
-inoremap <expr> <Enter> pumvisible() ? "\<C-y>" : "\<Enter>"
-" Define a custom command to open a new tab and prompt for a file name
-command! -nargs=1 NewFile call NewFile(<f-args>)
-" Function to open a new tab and prompt for a file name
-function! NewFile(filename)
-	let name = a:filename
-	echo name
-	if name != ''
-		execute 'tabnew ' . name
-		execute ':wq'
-		execute ':NERDTreeRefresh'
-	endif
-endfunction
-
-nnoremap <leader>cr :let @+=expand('%')<CR>:echo 'Relative path copied to clipboard'<CR>
-" Define a custom command to open a new tab and prompt for a text to search
-command! -nargs=1 LookUp call LookUp(<f-args>)
-
-" Function to open a prompt for a search text
-function! LookUp(text)
-    " Prompt the user for the search text
-    let text = input('Search: ')
-		" Exit if the input is empty
-    if empty(l:text)
-        redraw
-				echo "No results found"
-    endif
-
-    " Call your custom s:rg function with the input
-    call s:rg(l:text, 0)
-endfunction
-
-nnoremap <silent><leader>ss :call LookUp('')<CR>
-
-" Function to generate ctags depending on the project language
+" Generate ctags based on project language
 function! GenerateCTags()
-		if filereadable('Gemfile')
-    		" Ruby project
-    		silent! !ctags -R --languages=ruby --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
-  	elseif filereadable('requirements.txt') || filereadable('pyproject.toml') || filereadable('setup.py')
-    		" Python project
+  if filereadable('Gemfile')
+    silent! !ctags -R --languages=ruby --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
+  elseif filereadable('requirements.txt') || filereadable('pyproject.toml') || filereadable('setup.py')
     silent! !ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./tags $(
-						\ python3 -c "import os, sys; print(' '.join(d for d in sys.path if os.path.isdir(d)))"
-						\ )
-  	else
-    		" Fallback
-    		silent! !ctags -R --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
-		endif
+          \ python3 -c "import os, sys; print(' '.join(d for d in sys.path if os.path.isdir(d)))"
+          \ )
+  else
+    silent! !ctags -R --exclude=.git --exclude=log --exclude=tmp --exclude=tags --node_modules
+  endif
 endfunction
 
-" Map <leader>ct to run GenerateCTags
-nnoremap <leader>gt :call GenerateCTags()<CR>
+" New file in a new tab
+command! -nargs=1 NewFile call NewFile(<f-args>)
+function! NewFile(filename)
+  let name = a:filename
+  echo name
+  if name != ''
+    execute 'tabnew ' . name
+    execute ':wq'
+    execute ':NERDTreeRefresh'
+  endif
+endfunction
 
-" Enable coc.nvim
-let g:coc_global_extensions = ['coc-tsserver']
+" Search via ripgrep with prompt
+command! -nargs=1 LookUp call LookUp(<f-args>)
+function! LookUp(text)
+  let text = input('Search: ')
+  if empty(l:text)
+    redraw
+    echo "No results found"
+  endif
+  call s:rg(l:text, 0)
+endfunction
 
-" Customize HTML tag highlighting
+" Find and replace across buffer
+command! -nargs=* Replace :call ReplaceAll(<q-args>)
+function! ReplaceAll(args)
+  if a:args != ''
+    let target = input('Replace: ')
+    if target != ''
+      let to = input('To: ')
+      execute '%s/' . target . '/' . to . '/g'
+    endif
+  endif
+endfunction
+
+" ============================================================
+" HTML highlighting
+" ============================================================
 highlight HTMLTagDelimiter ctermfg=Blue guifg=Blue
 highlight HTMLTagName ctermfg=Green guifg=Green
 
-" Define a custom command to open a new tab and prompt for a text replace
-command! -nargs=* Replace :call ReplaceAll(<q-args>)
-
-" Function to open a prompt for /replacing text
-function! ReplaceAll(args)
-	if a:args != ''
-		let target = input('Replace: ')
-		if target != ''
-			let to = input('To: ')
-			execute '%s/'. target . '/' . to . '/g'
-		endif
-	endif
-endfunction
-
-nnoremap <leader>rr :Replace __ __<CR>
-imap <leader>rr <Esc>:Replace __ __<CR>
-
-inoremap <C-A> <C-O>0
-inoremap <C-E> <C-O>$
-
-autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
-
-nnoremap <silent><leader>2 :tabn<CR>
-imap <C-f> 2 :tabn<CR>i
-nnoremap <silent><leader> 1 :tabp<CR>
-imap <C-f> 1 :tabp<CR>i
-nnoremap <silent><leader>gb :Git blame<CR>
-imap <leader>gb :Git blame <CR>i
-nnoremap <silent><leader>gd :GitGutterDiffOrig<CR>
-imap <leader>gd :GitGutterDiffOrig <CR>i
-
-let s:salmon = "cc527a"
-let s:greeny = "3aafa9"
-let g:NERDTreeExtensionHighlightColor = {}
-let g:NERDTreeExtensionHighlightColor['rb'] = s:salmon
-let g:NERDTreeExtensionHighlightColor['erb'] = s:salmon
-
-
+" ============================================================
+" Long line highlight (>120 chars for Ruby)
+" ============================================================
 highlight ColorColumnText cterm=underline ctermfg=none guifg=red guibg=NONE
 call matchadd('ColorColumnText', '\%>120v.\+', 100)
 
+" ============================================================
+" Key bindings
+" ============================================================
 
+" Clear search highlight on Enter
+nnoremap <CR> :noh<CR>
+
+" FZF
+nnoremap <silent> <C-z>       :FZF<CR>
+nnoremap <silent> <C-t>       :Windows<CR>
+nnoremap <silent> <C-c>       :Buffers<CR>
+nnoremap <silent> <C-x>       :Rg<CR>
+nnoremap <silent> <Space><Space> :FZF<CR>
+
+" Save / Quit
+nnoremap <silent> <C-q> :q<CR>
+imap     <C-q>          <Esc>:q<CR>
+nnoremap <silent> <C-s> :w<CR>
+imap     <C-s>          <Esc>:w<CR>i
+
+" NERDTree
+map - :NERDTreeToggle<CR>
+
+" Leader key
+let mapleader = "\."
+
+map <leader>nf :NERDTreeFind<cr>
+
+" AI
+nnoremap <leader>cp :CopilotChatOpen<CR>
+nnoremap <leader>cc :Codeium Chat<CR>
+nnoremap <leader>ce :Codeium Enable<CR>
+nnoremap <leader>cd :Codeium Disable<CR>
+
+" Navigation
+nnoremap <leader><Up>   4k
+nnoremap <leader><Down> 4j
+
+" Window management
+nnoremap <leader>wh  :split<CR>
+nnoremap <leader>wv  :vsplit<CR>
+nnoremap <leader>w'  :resize +5<CR>
+nnoremap <leader>w/  :resize -5<CR>
+nnoremap <leader>w]  :vertical resize +5<CR>
+nnoremap <leader>w[  :vertical resize -5<CR>
+
+" ALE
+nnoremap <silent> <leader>f :ALEFix<CR>
+imap     <leader>f          :ALEFix<CR>i
+
+" Tags
+nnoremap <leader>gt :call GenerateCTags()<CR>
+
+" Git
+nnoremap <silent> <leader>gb :Git blame<CR>
+imap     <leader>gb           :Git blame<CR>i
+nnoremap <silent> <leader>gd :GitGutterDiffOrig<CR>
+imap     <leader>gd           :GitGutterDiffOrig<CR>i
+
+" Tab navigation
+nnoremap <silent> <leader>2 :tabn<CR>
+nnoremap <silent> <leader>1 :tabp<CR>
+
+" Copy relative path to clipboard
+nnoremap <leader>cr :let @+=expand('%')<CR>:echo 'Relative path copied to clipboard'<CR>
+
+" Search / Replace
+nnoremap <leader>rr  :Replace __ __<CR>
+imap     <leader>rr  <Esc>:Replace __ __<CR>
+nnoremap <silent> <leader>ss :call LookUp('')<CR>
+
+" Comments
+noremap \ :Commentary<CR>
+
+" Ruby auto-indent buffer
+autocmd FileType ruby inoremap <C-L> <Esc>:normal gg=G<C-O>A<CR>
+
+" Line start/end in insert mode
+inoremap <C-A> <C-O>0
+inoremap <C-E> <C-O>$
+
+" Autocomplete: Tab / Enter to confirm
+inoremap <expr> <Tab>   pumvisible() ? "\<C-y>" : "\<Tab>"
+inoremap <expr> <Enter> pumvisible() ? "\<C-y>" : "\<Enter>"
