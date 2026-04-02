@@ -1,4 +1,4 @@
-set nocompatible              " be iMproved, required
+" set nocompatible              " be iMproved, required
 set number
 syntax enable
 syntax on
@@ -18,7 +18,6 @@ set confirm
 set title
 
 autocmd BufEnter * let &titlestring = expand("%:t") | set title
-
 
 call plug#begin('~/.vim/plugged')
 
@@ -68,7 +67,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'tpope/vim-commentary'
 
 " AI
-Plug 'Exafunction/codeium.vim'
+" Plug 'Exafunction/codeium.vim'
 Plug 'DanBradbury/copilot-chat.vim'
 
 " Theme
@@ -102,6 +101,9 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Misc
 Plug 'tmux-plugins/vim-tmux'
 Plug 'andymass/vim-matchup'
+
+" Command line
+Plug 'gelguy/wilder.nvim'
 
 call plug#end()
 
@@ -172,6 +174,43 @@ let g:fzf_colors = {
       \ 'marker':  ['fg', 'Keyword'],
       \ 'spinner': ['fg', 'Label'],
       \ 'header':  ['fg', 'Comment'] }
+
+" FZF Command Popup
+function! FzfCommands()
+  let l:commands = getcompletion('', 'command')
+  call fzf#run({
+        \ 'source': l:commands,
+        \ 'sink': function('s:exec_command'),
+        \ 'options': [
+        \   '--prompt=❯  ',
+        \   '--layout=reverse',
+        \   '--info=hidden',
+        \   '--no-preview',
+        \   '--no-scrollbar',
+        \   '--border=rounded',
+        \   '--padding=0,4',
+        \   '--margin=0,3',
+        \   '--color=border:#FFFFFF,prompt:#808080,pointer:#63f542,hl:#63f542,hl+:#63f542,fg:#808080,fg+:#FFFFFF,separator:#808080,input:#808080',
+        \   '--pointer=›',
+        \   '--height=3',
+        \   '--separator=─',
+        \ ],
+        \ 'window': {
+        \   'width': 0.35,
+        \   'height': 0.18,
+        \   'yoffset': 0.5,
+        \   'xoffset': 0.5,
+        \   'border': 'rounded',
+        \   'highlight': 'Normal',
+        \ }
+        \ })
+endfunction
+
+function! s:exec_command(cmd)
+  execute a:cmd
+endfunction
+
+nnoremap <F10> :call FzfCommands()<CR>
 
 " ============================================================
 " ALE
@@ -261,7 +300,10 @@ function! s:rg(args, bang)
   let l:query      = empty(a:args) ? expand('<cword>') : a:args
   let l:qs_escaped = substitute(l:query, "'", "'\"'\"'", 'g')
   let l:rg_cmd     = 'rg --column --line-number --no-heading --color=always --smart-case ' . shellescape(l:query)
-  let l:perl_script = "perl -pe 's/\\Q" . l:qs_escaped . "\\E/\\e[43m\$&\\e[0m/gi'"
+  " let l:perl_script = "perl -pe 's/\\Q" . l:qs_escaped . "\\E/\\e[43m\$&\\e[0m/gi'"
+      let l:words = split(l:query)
+      let l:pattern = join(map(l:words, '"\\Q" . v:val . "\\E"'), '|')
+      let l:perl_script = "perl -pe 's/" . l:pattern . "/\\e[43m\$&\\e[0m/gi'"
   let l:raw_preview = 'bat --style=numbers --color=always {1} | ' . l:perl_script
   let l:preview_cmd = 'bash -c ' . shellescape(l:raw_preview)
   let l:opts = '--ansi ' .
@@ -308,12 +350,46 @@ function! NewFile(filename)
 endfunction
 
 " Search via ripgrep with prompt
-command! -nargs=1 LookUp call LookUp(<f-args>)
 function! LookUp(text)
-  let text = input('Search: ')
+  call fzf#run({
+        \ 'source': [],
+        \ 'sink': function('s:lookup_sink'),
+        \ 'options': [
+        \   '--prompt=❯  ',
+        \   '--layout=reverse',
+        \   '--info=hidden',
+        \   '--no-preview',
+        \   '--no-scrollbar',
+        \   '--border=rounded',
+        \   '--padding=0,4',
+        \   '--margin=0,2',
+        \   '--color=border:#FFFFFF,prompt:#808080,pointer:#63f542,hl:#63f542,hl+:#63f542,fg:#808080,fg+:#FFFFFF,separator:#808080',
+        \   '--pointer=›',
+        \   '--height=3',
+        \   '--separator=─',
+        \   '--print-query',
+        \   '--no-select-1',
+        \   '--no-exit-0',
+        \ ],
+        \ 'window': {
+        \   'width': 0.4,
+        \   'height': 0.16,
+        \   'yoffset': 0.5,
+        \   'xoffset': 0.5,
+        \   'border': 'rounded',
+        \   'highlight': 'Normal',
+        \ }
+        \ })
+endfunction
+
+function! s:lookup_sink(lines)
+  if type(a:lines) == type([])
+    let l:text = a:lines[0]
+  else
+    let l:text = a:lines
+  endif
   if empty(l:text)
-    redraw
-    echo "No results found"
+    return
   endif
   call s:rg(l:text, 0)
 endfunction
@@ -402,8 +478,8 @@ nnoremap <silent> <leader>gd :GitGutterDiffOrig<CR>
 imap     <leader>gd           :GitGutterDiffOrig<CR>i
 
 " Tab navigation
-nnoremap <silent> <leader>2 :tabn<CR>
-nnoremap <silent> <leader>1 :tabp<CR>
+nnoremap <S-h> :tabp<CR>
+nnoremap <S-l> :tabn<CR>
 
 " Copy relative path to clipboard
 nnoremap <leader>cr :let @+=expand('%')<CR>:echo 'Relative path copied to clipboard'<CR>
@@ -426,3 +502,12 @@ inoremap <C-E> <C-O>$
 " Autocomplete: Tab / Enter to confirm
 inoremap <expr> <Tab>   pumvisible() ? "\<C-y>" : "\<Tab>"
 inoremap <expr> <Enter> pumvisible() ? "\<C-y>" : "\<Enter>"
+
+" Wilder floating popup for command line
+call wilder#setup({'modes': [':', '/', '?']})
+call wilder#set_option('renderer', wilder#popupmenu_renderer({
+      \ 'highlighter': wilder#basic_highlighter(),
+      \ 'min_width': '100%',
+      \ 'max_height': '25%',
+      \ 'reverse': 0,
+      \ }))
