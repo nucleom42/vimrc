@@ -478,8 +478,8 @@ nnoremap <silent> <leader>gd :GitGutterDiffOrig<CR>
 imap     <leader>gd           :GitGutterDiffOrig<CR>i
 
 " Tab navigation
-nnoremap <S-h> :tabp<CR>
-nnoremap <S-l> :tabn<CR>
+nnoremap <leader><Left> :tabp<CR>
+nnoremap <leader><Right> :tabn<CR>
 
 " Copy relative path to clipboard
 nnoremap <leader>cr :let @+=expand('%')<CR>:echo 'Relative path copied to clipboard'<CR>
