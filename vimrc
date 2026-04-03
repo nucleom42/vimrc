@@ -67,7 +67,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'tpope/vim-commentary'
 
 " AI
-" Plug 'Exafunction/codeium.vim'
+Plug 'Exafunction/codeium.vim'
 Plug 'DanBradbury/copilot-chat.vim'
 
 " Theme
@@ -442,7 +442,7 @@ imap     <C-s>          <Esc>:w<CR>i
 map - :NERDTreeToggle<CR>
 
 " Leader key
-let mapleader = "\."
+let mapleader = "."
 
 map <leader>nf :NERDTreeFind<cr>
 
@@ -511,3 +511,7 @@ call wilder#set_option('renderer', wilder#popupmenu_renderer({
       \ 'max_height': '25%',
       \ 'reverse': 0,
       \ }))
+
+" Goto
+nnoremap <leader>] <C-]>
+nnoremap <leader>[ <C-t>
