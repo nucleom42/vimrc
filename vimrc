@@ -178,6 +178,7 @@ let g:fzf_colors = {
 " FZF Command Popup
 function! FzfCommands()
   let l:commands = getcompletion('', 'command')
+  let header_com = s:center('cmd', 40)
   call fzf#run({
         \ 'source': l:commands,
         \ 'sink': function('s:exec_command'),
@@ -190,14 +191,16 @@ function! FzfCommands()
         \   '--border=rounded',
         \   '--padding=0,4',
         \   '--margin=0,3',
-        \   '--color=border:#FFFFFF,prompt:#808080,pointer:#63f542,hl:#63f542,hl+:#63f542,fg:#808080,fg+:#FFFFFF,separator:#808080,input:#808080',
+        \   '--color=border:#FFFFFF,prompt:#808080,pointer:#63f542,hl:#63f542,hl+:#63f542,fg:#808080,fg+:#FFFFFF,separator:#808080,input:#808080,header:#cc8400',
         \   '--pointer=›',
         \   '--height=3',
         \   '--separator=─',
+        \   '--header=' . header_com,
+        \   '--header-first',
         \ ],
         \ 'window': {
         \   'width': 0.35,
-        \   'height': 0.18,
+        \   'height': 0.3,
         \   'yoffset': 0.5,
         \   'xoffset': 0.5,
         \   'border': 'rounded',
@@ -351,6 +354,8 @@ endfunction
 
 " Search via ripgrep with prompt
 function! LookUp(text)
+  let header = s:center('search', 40)
+
   call fzf#run({
         \ 'source': [],
         \ 'sink': function('s:lookup_sink'),
@@ -363,23 +368,30 @@ function! LookUp(text)
         \   '--border=rounded',
         \   '--padding=0,4',
         \   '--margin=0,2',
-        \   '--color=border:#FFFFFF,prompt:#808080,pointer:#63f542,hl:#63f542,hl+:#63f542,fg:#808080,fg+:#FFFFFF,separator:#808080',
+        \   '--color=border:#FFFFFF,prompt:#808080,pointer:#63f542,hl:#63f542,hl+:#63f542,fg:#808080,fg+:#FFFFFF,separator:#808080,header:#cc8400,',
         \   '--pointer=›',
         \   '--height=3',
         \   '--separator=─',
         \   '--print-query',
         \   '--no-select-1',
         \   '--no-exit-0',
+        \   '--header=' . header,
+        \   '--header-first',
         \ ],
         \ 'window': {
         \   'width': 0.4,
-        \   'height': 0.16,
+        \   'height': 0.10,
         \   'yoffset': 0.5,
         \   'xoffset': 0.5,
         \   'border': 'rounded',
         \   'highlight': 'Normal',
         \ }
         \ })
+endfunction
+
+function! s:center(text, width)
+  let padding = repeat(' ', max([0, (a:width - len(a:text)) / 2]))
+  return padding . a:text
 endfunction
 
 function! s:lookup_sink(lines)
