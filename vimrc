@@ -267,6 +267,9 @@ let g:snipMate = { 'snippet_version' : 1 }
 " Gitgutter
 " ============================================================
 let g:gitgutter_grep = ''
+let g:gitgutter_enabled = 1
+let g:gitgutter_realtime = 0
+let g:gitgutter_eager = 0
 
 " ============================================================
 " COC
