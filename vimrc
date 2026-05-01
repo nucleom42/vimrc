@@ -1,3 +1,4 @@
+
 " set nocompatible              " be iMproved, required
 set number
 syntax enable
@@ -531,3 +532,114 @@ call wilder#set_option('renderer', wilder#popupmenu_renderer({
 " Goto
 nnoremap <leader>] <C-]>
 nnoremap <leader>[ <C-t>
+
+" ============================================================
+" Custom Welcome Screen (Minimalist Menu)
+" ============================================================
+
+function! StartScreenMenu()
+  let vim_version = 'Vim ' . (v:version / 100) . '.' . (v:version % 100)
+  
+  let items = [
+        \ '[s] Search', 
+        \ '[f] Search files', 
+        \ '[u] Update Plugins', 
+        \ '[q] Quit'
+        \ ]
+
+  call fzf#run({
+        \ 'source': items,
+        \ 'sink*': function('s:start_screen_sink'),
+        \ 'options': [
+        \   '--expect=s,f,u,q',
+        \   '--prompt=❯  ',
+        \   '--layout=reverse',
+        \   '--info=hidden',
+        \   '--no-preview',
+        \   '--no-scrollbar',
+        \   '--border=rounded',
+        \   '--padding=0,4',
+        \   '--color=border:#FFFFFF,prompt:#808080,pointer:#63f542,hl:#63f542,hl+:#63f542,fg:#808080,fg+:#FFFFFF,separator:#808080,input:#808080,header:#cc8400',
+        \   '--pointer=›',
+        \   '--separator=─',
+        \   '--header=          ' . vim_version,
+        \   '--header-first',
+        \ ],
+        \ 'window': {
+        \   'width': 0.25,
+        \   'height': 0.22,
+        \   'yoffset': 0.5,
+        \   'xoffset': 0.5,
+        \   'border': 'rounded',
+        \   'highlight': 'Normal',
+        \ }
+        \ })
+endfunction
+
+function! s:start_screen_sink(lines)
+  " If the user presses Esc, FZF returns an empty list
+  if empty(a:lines)
+    return
+  endif
+
+  let key = get(a:lines, 0, '')
+  let choice = get(a:lines, 1, '')
+
+  " Wrapped in a tiny timer to ensure the FZF popup is fully destroyed 
+  " before Vim tries to open another one!
+  if key ==# 's' || choice ==# '[s] Search'
+    call timer_start(10, { _ -> execute('call LookUp("")') })
+  elseif key ==# 'f' || choice ==# '[f] Search files'
+    call timer_start(10, { _ -> execute('FZF') })
+  elseif key ==# 'u' || choice ==# '[u] Update Plugins'
+    call timer_start(10, { _ -> execute('PlugUpdate') })
+  elseif key ==# 'q' || choice ==# '[q] Quit'
+    quit!
+  endif
+endfunction
+
+function! s:open_menu_and_clean_ui(timer_id)
+  set showtabline=0
+  set laststatus=0
+  if exists('+winbar')
+    setlocal winbar=
+  endif
+  redraw!
+  call StartScreenMenu()
+endfunction
+
+function! StartScreen()
+  if argc() != 0 || exists('s:start_screen_shown') | return | endif
+  let s:start_screen_shown = 1
+
+  enew
+  silent! %delete _
+
+  setlocal buftype=nofile bufhidden=wipe noswapfile
+  setlocal nonumber norelativenumber nocursorline nolist signcolumn=no foldcolumn=0 colorcolumn=
+  setlocal fillchars=eob:\ 
+
+  let s:old_showtabline = &showtabline
+  let s:old_laststatus = &laststatus
+
+  augroup StartScreenCleanup
+    autocmd! * <buffer>
+    autocmd BufLeave <buffer> let &showtabline = s:old_showtabline | let &laststatus = s:old_laststatus
+  augroup END
+
+  setlocal filetype=startscreen
+  setlocal nomodifiable nomodified
+
+  " Backup hotkeys for the blank background screen
+  nnoremap <buffer><silent> m :call StartScreenMenu()<CR>
+  nnoremap <buffer><silent> s :call LookUp('')<CR>
+  nnoremap <buffer><silent> f :FZF<CR>
+  nnoremap <buffer><silent> u :PlugUpdate<CR>
+  nnoremap <buffer><silent> q :quit!<CR>
+
+  call timer_start(20, function('s:open_menu_and_clean_ui'))
+
+endfunction
+
+autocmd VimEnter * call StartScreen()
+autocmd BufEnter * if &filetype ==# 'startscreen' | setlocal nomodifiable | endif
