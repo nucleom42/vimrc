@@ -594,7 +594,7 @@ function! s:start_screen_sink(choice)
   elseif a:choice ==# 'Update Plugins'
     call timer_start(50, { _ -> execute('PlugUpdate') })
   elseif a:choice ==# 'Quit'
-    quit!
+    call timer_start(50, { _ -> execute('qa') })
   endif
 endfunction
 
@@ -644,3 +644,6 @@ augroup StartScreenGroup
   autocmd!
   autocmd VimEnter * if argc() == 0 | call StartScreen() | endif
 augroup END
+
+" Global shortcut to open the Custom Welcome Menu
+nnoremap <leader>m :call StartScreenMenu()<CR>
