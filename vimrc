@@ -67,9 +67,9 @@ Plug 'davidhalter/jedi-vim'
 Plug 'tpope/vim-commentary'
 
 " AI
-Plug 'Exafunction/codeium.vim'
+" Plug 'Exafunction/codeium.vim'
 Plug 'DanBradbury/copilot-chat.vim'
-" Plug 'github/copilot.vim'
+Plug 'github/copilot.vim'
 
 " Theme
 Plug 'joshdick/onedark.vim'
@@ -575,7 +575,7 @@ function! StartScreenMenu()
         \ ],
         \ 'window': {
         \   'width': 0.25,
-        \   'height': 0.26,
+        \   'height': 0.28,
         \   'yoffset': 0.5,
         \   'xoffset': 0.5,
         \   'border': 'rounded',
