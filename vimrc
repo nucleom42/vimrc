@@ -267,7 +267,7 @@ let g:snipMate = { 'snippet_version' : 1 }
 " ============================================================
 " Gitgutter
 " ============================================================
-let g:gitgutter_grep = ''
+" let g:gitgutter_grep = ''
 let g:gitgutter_enabled = 1
 let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
@@ -460,6 +460,42 @@ map - :NERDTreeToggle<CR>
 " Leader key
 let mapleader = "."
 
+" Allow buffers (like the terminal) to hide in the background without dying
+set hidden
+
+function! ToggleTerminal()
+    let l:term_buf = -1
+    for b in range(1, bufnr('$'))
+        if getbufvar(b, '&buftype') ==# 'terminal'
+            let l:term_buf = b
+            break
+        endif
+    endfor
+
+    if l:term_buf != -1
+        let l:term_win = bufwinnr(l:term_buf)
+        if l:term_win != -1
+            execute l:term_win . 'wincmd c'
+        else
+            " If it is hidden, split it open on the bottom right
+            execute 'bo vert sb ' . l:term_buf
+            execute 'vertical resize ' . (&columns * 35 / 100)
+            
+            " Force Vim to press 'a' to enter Terminal mode reliably
+            call feedkeys("a", "n")
+        endif
+    else
+        execute 'bo vert term'
+        execute 'vertical resize ' . (&columns * 35 / 100)
+    endif
+endfunction
+
+" Toggle from Normal mode (when editing code)
+nnoremap <silent> <leader>t :call ToggleTerminal()<CR>
+
+" Toggle from Terminal mode (when typing in the terminal)
+tnoremap <silent> <leader>t <C-\><C-n>:call ToggleTerminal()<CR>
+
 map <leader>nf :NERDTreeFind<cr>
 
 " AI
@@ -586,15 +622,15 @@ endfunction
 
 function! s:start_screen_sink(choice)
   if a:choice ==# 'Text search'
-    call timer_start(50, { _ -> execute('call LookUp("")') })
+    call timer_start(25, { _ -> execute('call LookUp("")') })
   elseif a:choice ==# 'Nerd Tree'
-    call timer_start(50, { _ -> execute('NERDTree') })
+    call timer_start(25, { _ -> execute('NERDTree') })
   elseif a:choice ==# 'File search'
-    call timer_start(50, { _ -> execute('FZF') })
+    call timer_start(25, { _ -> execute('FZF') })
   elseif a:choice ==# 'Update Plugins'
-    call timer_start(50, { _ -> execute('PlugUpdate') })
+    call timer_start(25, { _ -> execute('PlugUpdate') })
   elseif a:choice ==# 'Quit'
-    call timer_start(50, { _ -> execute('qa') })
+    call timer_start(25, { _ -> execute('qa') })
   endif
 endfunction
 
@@ -636,7 +672,7 @@ function! StartScreen()
     autocmd BufLeave <buffer> let &showtabline = s:old_showtabline | let &laststatus = s:old_laststatus
   augroup END
 
-  call timer_start(50, function('s:open_menu_and_clean_ui'))
+  call timer_start(25, function('s:open_menu_and_clean_ui'))
 endfunction
 
 " Use a safer autocmd trigger
