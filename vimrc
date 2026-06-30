@@ -44,7 +44,7 @@ Plug 'garbas/vim-snipmate'
 " FZF
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-rooter'
+" Plug 'airblade/vim-rooter'
 
 " Search
 Plug 'jremmen/vim-ripgrep'
@@ -61,15 +61,15 @@ Plug 'vim-syntastic/syntastic'
 " Python
 Plug 'vim-scripts/indentpython.vim'
 Plug 'nvie/vim-flake8'
-Plug 'davidhalter/jedi-vim'
+" Plug 'davidhalter/jedi-vim'
 
 " Comments
 Plug 'tpope/vim-commentary'
 
 " AI
-Plug 'Exafunction/codeium.vim'
+" Plug 'Exafunction/codeium.vim'
 Plug 'DanBradbury/copilot-chat.vim'
-" Plug 'github/copilot.vim'
+Plug 'github/copilot.vim'
 
 " Theme
 Plug 'joshdick/onedark.vim'
@@ -267,7 +267,7 @@ let g:snipMate = { 'snippet_version' : 1 }
 " ============================================================
 " Gitgutter
 " ============================================================
-let g:gitgutter_grep = ''
+" let g:gitgutter_grep = ''
 let g:gitgutter_enabled = 1
 let g:gitgutter_realtime = 0
 let g:gitgutter_eager = 0
@@ -667,13 +667,10 @@ function! StartScreen()
 
   let s:old_showtabline = &showtabline
   let s:old_laststatus = &laststatus
-augroup StartScreenCleanup
-  autocmd! * <buffer>
-  autocmd BufLeave <buffer> 
-        \ let &showtabline = s:old_showtabline | 
-        \ let &laststatus = s:old_laststatus |
-        \ set number
-augroup END
+  augroup StartScreenCleanup
+    autocmd! * <buffer>
+    autocmd BufLeave <buffer> let &showtabline = s:old_showtabline | let &laststatus = s:old_laststatus
+  augroup END
 
   call timer_start(25, function('s:open_menu_and_clean_ui'))
 endfunction
