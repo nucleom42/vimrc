@@ -117,6 +117,24 @@ let g:onedark_color_overrides = {
       \ }
 colorscheme onedark
 
+" Enable cursor line position tracking
+set cursorline
+
+" Restrict the highlight to just the line number (prevents the whole line from highlighting)
+set cursorlineopt=number
+
+" Set the color to yellow and make it bold
+highlight CursorLineNr cterm=bold ctermfg=Yellow gui=bold guifg=#FFFF00
+
+" Enable cursor line position tracking
+set cursorline
+
+" Restrict the highlight to just the line number (prevents the whole line from highlighting)
+set cursorlineopt=number
+
+" Set the color to yellow and make it bold
+highlight CursorLineNr ctermfg=Yellow gui=bold guifg=#FFFF00
+
 " ============================================================
 " Indentation by filetype
 " ============================================================
