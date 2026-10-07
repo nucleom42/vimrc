@@ -26,6 +26,7 @@ Plug 'VundleVim/Vundle.vim'
 Plug 'preservim/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
+Plug 'farmergreg/vim-lastplace'
 
 " Git
 Plug 'airblade/vim-gitgutter'
@@ -102,6 +103,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Misc
 Plug 'tmux-plugins/vim-tmux'
 Plug 'andymass/vim-matchup'
+Plug 'jiangmiao/auto-pairs'
 
 " Command line
 Plug 'gelguy/wilder.nvim'
@@ -648,7 +650,7 @@ function! s:start_screen_sink(choice)
   elseif a:choice ==# 'Update Plugins'
     call timer_start(25, { _ -> execute('PlugUpdate') })
   elseif a:choice ==# 'Quit'
-    call timer_start(25, { _ -> execute('qa') })
+    call timer_start(25, { _ -> execute('qall') })
   endif
 endfunction
 
