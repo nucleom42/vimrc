@@ -644,7 +644,7 @@ function! s:start_screen_sink(choice)
   if a:choice ==# 'Text search'
     call timer_start(25, { _ -> execute('call LookUp("")') })
   elseif a:choice ==# 'Nerd Tree'
-    call timer_start(25, { _ -> execute('NERDTree') })
+    call timer_start(25, { _ -> execute('enew | NERDTree') })
   elseif a:choice ==# 'File search'
     call timer_start(25, { _ -> execute('FZF') })
   elseif a:choice ==# 'Update Plugins'
@@ -689,10 +689,18 @@ function! StartScreen()
   let s:old_laststatus = &laststatus
   augroup StartScreenCleanup
     autocmd! * <buffer>
-    autocmd BufLeave <buffer> let &showtabline = s:old_showtabline | let &laststatus = s:old_laststatus
+    " BufLeave is skipped when Vim reuses this empty buffer, so restore on wipeout.
+    autocmd BufWipeout <buffer> call s:restore_after_start_screen()
   augroup END
 
   call timer_start(25, function('s:open_menu_and_clean_ui'))
+endfunction
+
+function! s:restore_after_start_screen()
+  let &showtabline = s:old_showtabline
+  let &laststatus = s:old_laststatus
+  " The start screen's window-local options carry over to the next buffer in this window
+  autocmd BufEnter * ++once setlocal number< relativenumber< cursorline< list< signcolumn< foldcolumn< colorcolumn< fillchars<
 endfunction
 
 " Use a safer autocmd trigger
