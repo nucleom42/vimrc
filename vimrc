@@ -239,9 +239,13 @@ nnoremap <F10> :call FzfCommands()<CR>
 " ============================================================
 " ALE
 " ============================================================
+" Prefer project-pinned tools and configs (node_modules/.bin, virtualenv,
+" poetry/uv, bundler); fall back to global executables when a project has none.
+let g:ale_use_global_executables = 0
+let g:ale_python_auto_virtualenv = 1
+let g:ale_python_auto_poetry = 1
+let g:ale_python_auto_uv = 1
 let g:ale_set_loclist = 1
-let g:ale_ruby_rubocop_config_file = '.rubocop.yml'
-let g:ale_ruby_rubocop_executable = 'rubocop'
 
 let g:ale_fixers = {
       \ 'ruby':            ['remove_trailing_lines', 'trim_whitespace', 'rubocop'],
@@ -261,6 +265,40 @@ let g:ale_linters = {
       \ 'html':       ['prettier', 'html'],
       \ 'css':        ['stylelint', 'css'],
       \ }
+
+" Per-buffer overrides when the project pins its own tools.
+function! s:AleProjectTools() abort
+  let l:dir = expand('%:p:h') . ';'
+
+  if &filetype ==# 'ruby'
+    let l:gemfile = findfile('Gemfile', l:dir)
+    if !empty(l:gemfile) && match(readfile(fnamemodify(l:gemfile, ':p')), '^\s*gem\s\+[''"]rubocop[''"]') >= 0
+      let b:ale_ruby_rubocop_executable = 'bundle'
+    endif
+  endif
+
+  if &filetype ==# 'python'
+    let l:pyproject = findfile('pyproject.toml', l:dir)
+    let l:conf = empty(l:pyproject) ? [] : readfile(fnamemodify(l:pyproject, ':p'))
+    let l:base = ['remove_trailing_lines', 'trim_whitespace']
+    if match(l:conf, '^\[tool\.ruff') >= 0 || !empty(findfile('ruff.toml', l:dir))
+      let b:ale_fixers = l:base + ['ruff', 'ruff_format']
+    elseif match(l:conf, '^\[tool\.black') >= 0
+      let b:ale_fixers = l:base + (match(l:conf, '^\[tool\.isort') >= 0 ? ['isort', 'black'] : ['black'])
+    endif
+  endif
+endfunction
+
+augroup ale_project_tools
+  autocmd!
+  autocmd FileType ruby,python call s:AleProjectTools()
+augroup END
+
+" ALE handles linting; keep Syntastic from also running global checkers on save.
+let g:syntastic_mode_map = { 'mode': 'passive' }
+
+" Honour the project's .editorconfig (indent, line endings, final newline).
+packadd! editorconfig
 
 " ============================================================
 " vim-ruby
