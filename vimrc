@@ -631,16 +631,13 @@ nnoremap <leader>[ <C-t>
 " ============================================================
 
 function! StartScreenMenu()
-  let menu_title = 'menu'    
+  let menu_title = 'menu'
   let vim_version = 'Vim ' . (v:version / 100) . '.' . (v:version % 100)
+  let popup_width = 0.25
 
-  let orange = "\e[38;5;172m"
-  let grey   = "\e[38;5;244m"
-  let reset  = "\e[0m"
-
-  let line2 = '          ' . orange . menu_title . reset
-  let line1 = '            ' . grey . vim_version . reset
-  let full_header = line1 . "\n" . line2
+  " Header text starts after: popup border (2) + fzf border (2) + --padding=0,4 (8) + gutter (2).
+  let header_width = float2nr(&columns * popup_width) - 14
+  let header_pad = repeat(' ', max([0, (header_width - strdisplaywidth(menu_title)) / 2]))
   
   let items = [
         \ 'Nerd Tree',
@@ -660,15 +657,17 @@ function! StartScreenMenu()
         \   '--no-preview',
         \   '--no-scrollbar',
         \   '--border=rounded',
+        \   '--border-label= ' . vim_version . ' ',
+        \   '--border-label-pos=-2:top',
         \   '--padding=0,4',
-        \   '--color=border:#FFFFFF,prompt:#808080,pointer:#63f542,hl:#63f542,hl+:#63f542,fg:#808080,fg+:#FFFFFF,separator:#808080,input:#808080,header:#cc8400',
+        \   '--color=border:#FFFFFF,prompt:#808080,pointer:#63f542,hl:#63f542,hl+:#63f542,fg:#808080,fg+:#FFFFFF,separator:#808080,input:#808080,header:#cc8400,label:#808080',
         \   '--pointer=›',
         \   '--separator=─',
-        \   '--header=          ' . full_header,
+        \   '--header=' . header_pad . menu_title,
         \   '--header-first',
         \ ],
         \ 'window': {
-        \   'width': 0.25,
+        \   'width': popup_width,
         \   'height': 0.28,
         \   'yoffset': 0.5,
         \   'xoffset': 0.5,
